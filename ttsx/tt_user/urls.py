@@ -4,7 +4,13 @@ import views
 urlpatterns = [
     url("^register$",views.register),
     url("^register_cl$",views.register_cl),
+    url("^nameycl/(\w+)$",views.nameycl),
     url("^login$",views.login),
-    url("^login_cl$",views.login_cl),
+    url("^pwd_cl$",views.pwd_cl),
+    url("^cookie/(\w+)",views.cookie),
     url("^centerinfo$",views.centerInfo),
+    url("^centersite$",views.centerSite),
+    url("^centersite_cl$", views.centerSite_cl),
+    url("^centerorder$",views.centerOrder),
+
 ]

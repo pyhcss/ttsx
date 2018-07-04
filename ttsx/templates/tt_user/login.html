@@ -1,10 +1,15 @@
 {% extends 'base_bottom.html' %}
 {% load static from staticfiles %}
 
+{% block head %}
+<script src="{% static 'js/login.js'%}"></script>
+
+{% endblock head %}
+
 {% block body %}
 
 	<div class="login_top clearfix">
-		<a href="index.html" class="login_logo"><img src="{% static 'images/logo02.png'%}"></a>
+		<a href="#" class="login_logo"><img src="{% static 'images/logo02.png'%}"></a>
 	</div>
 
 	<div class="login_form_bg">
@@ -17,14 +22,14 @@
 					<a href="/user/register">立即注册</a>
 				</div>
 				<div class="form_input">
-					<form action="/user/login_cl" method="post">
+					<form action="/user/centerinfo" method="post" id="from_login">
 						{% csrf_token %}
-						<input type="text" name="username" class="name_input" placeholder="请输入用户名">
+						<input type="text" name="username" id="username" class="name_input" placeholder="请输入用户" value="{{ uname }}">
 						<div class="user_error">输入错误</div>
-						<input type="password" name="pwd" class="pass_input" placeholder="请输入密码">
+						<input type="password" name="pwd" id="pwd" class="pass_input" placeholder="请输入密码" value="">
 						<div class="pwd_error">输入错误</div>
 						<div class="more_input clearfix">
-							<input type="checkbox" name="">
+							<input type="checkbox" name="jzyhm" id="jzyhm" checked="checked">
 							<label>记住用户名</label>
 							<a href="#">忘记密码</a>
 						</div>

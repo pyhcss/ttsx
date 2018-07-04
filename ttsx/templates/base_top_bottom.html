@@ -1,4 +1,5 @@
 {% extends "base_bottom.html" %}
+{% load static from staticfiles %}
 {% block body %}
 <div class="header_con">
 		<div class="header">
@@ -8,9 +9,9 @@
 					欢迎您：<em>张 山</em>
 				</div>
 				<div class="login_btn fl">
-					<a href="login.html">登录</a>
+					<a href="{% static '/user/login'%}">登录</a>
 					<span>|</span>
-					<a href="register.html">注册</a>
+					<a href="{% static '/user/register'%}">注册</a>
 				</div>
 				<div class="user_link fl">
 					<span>|</span>

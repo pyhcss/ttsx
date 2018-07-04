@@ -1,11 +1,10 @@
 $(function(){
 
-	var error_name = false;
-	var error_password = false;
-	var error_check_password = false;
-	var error_email = false;
-	var error_check = false;
-
+	var error_name = true;
+	var error_password = true;
+	var error_check_password = true;
+	var error_email = true;
+	var error_check = true;
 
 	$('#user_name').blur(function() {
 		check_user_name();
@@ -37,19 +36,33 @@ $(function(){
 		}
 	});
 
-
 	function check_user_name(){
 		var len = $('#user_name').val().length;
 		if(len<5||len>20)
 		{
-			$('#user_name').next().html('请输入5-20个字符的用户名')
+			$('#user_name').next().html('请输入5-20个字符的用户名');
+			$('#user_name').next().css('color','#e62e2e');
 			$('#user_name').next().show();
 			error_name = true;
 		}
 		else
 		{
-			$('#user_name').next().hide();
-			error_name = false;
+            $.get("/user/nameycl/"+$('#user_name').val(),function(data){
+                if(data.data != 0 && len>=5 && len<=20)
+                {
+                    $('#user_name').next().html("用户名已被注册");
+                    $('#user_name').next().css('color','#e62e2e');
+                    $('#user_name').next().show();
+                    error_name = true;
+                }
+                 else if(data.data == 0 && len>=5 && len<=20)
+                {
+                    $('#user_name').next().html("用户名可以注册");
+                    $('#user_name').next().css('color','#518e17');
+                    $('#user_name').next().show();
+                    error_name = false;
+                }
+            });
 		}
 	}
 
@@ -67,7 +80,6 @@ $(function(){
 			error_password = false;
 		}		
 	}
-
 
 	function check_cpwd(){
 		var pass = $('#pwd').val();
@@ -101,15 +113,28 @@ $(function(){
 			$('#email').next().show();
 			error_check_password = true;
 		}
-
 	}
 
+	function cheched() {
+		if($('#allow').is(':checked'))
+		{
+			error_check = false;
+			$('#allow').siblings('span').hide();
+		}
+		else
+		{
+			error_check = true;
+			$('#allow').siblings('span').html('请勾选同意');
+			$('#allow').siblings('span').show();
+		}
+    }
 
 	$('#reg_form').submit(function() {
 		check_user_name();
 		check_pwd();
 		check_cpwd();
 		check_email();
+		cheched();
 
 		if(error_name == false && error_password == false && error_check_password == false && error_email == false && error_check == false)
 		{
@@ -121,12 +146,5 @@ $(function(){
 		}
 
 	});
-
-
-
-
-
-
-
 
 })

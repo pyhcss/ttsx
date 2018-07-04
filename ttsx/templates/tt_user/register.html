@@ -8,7 +8,7 @@
 {% block body %}
 	<div class="register_con">
 		<div class="l_con fl">
-			<a class="reg_logo"><img src="{% static 'images/logo02.png'%}"></a>
+			<a href="#" class="reg_logo"><img src="{% static 'images/logo02.png'%}"></a>
 			<div class="reg_slogan">足不出户  ·  新鲜每一天</div>
 			<div class="reg_banner"></div>
 		</div>
@@ -19,7 +19,7 @@
 				<a href="/user/login">登录</a>
 			</div>
 			<div class="reg_form clearfix">
-				<form action="/user/register_cl" method="post">
+				<form action="/user/register_cl" method="post" id="reg_form">
 					{% csrf_token %}
 				<ul>
 					<li>
