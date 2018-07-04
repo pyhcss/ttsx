@@ -5,21 +5,22 @@
 		<div class="header">
 			<div class="welcome fl">欢迎来到天天生鲜!</div>
 			<div class="fr">
-				<div class="login_info fl">
-					欢迎您：<em>张 山</em>
+				<div class="login_info fl" {{ name_show|safe }}>
+					欢迎您：<em>{{ supername|safe }}</em>
+					<a href="/user/zhuxiao" class="zhuxiao">注销</a>
 				</div>
-				<div class="login_btn fl">
+				<div class="login_btn fl" {{ name_hide|safe }}>
 					<a href="{% static '/user/login'%}">登录</a>
 					<span>|</span>
 					<a href="{% static '/user/register'%}">注册</a>
 				</div>
 				<div class="user_link fl">
 					<span>|</span>
-					<a href="user_center_info.html">用户中心</a>
+					<a href="{% static '/user/centerinfo'%}">用户中心</a>
 					<span>|</span>
-					<a href="cart.html">我的购物车</a>
+					<a href="#">我的购物车</a>
 					<span>|</span>
-					<a href="user_center_order.html">我的订单</a>
+					<a href="#">我的订单</a>
 				</div>
 			</div>
 		</div>

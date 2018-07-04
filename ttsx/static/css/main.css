@@ -640,3 +640,9 @@ html,body{height:100%}
 .stress{
 	color:#ff8800;
 }
+.zhuxiao{
+	color:#666;
+}
+.zhuxiao:hover{
+	color:#ff8800;
+}

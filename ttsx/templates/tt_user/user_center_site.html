@@ -6,7 +6,11 @@
             <div class="site_con">
                 <dl>
                     <dt>当前地址：</dt>
+                    {% if addr == "" %}
+                    <dd></dd>
+                    {% else %}
                     <dd>{{ addr }} ( {{name}} 收 ) {{ tel }}</dd>
+                    {% endif %}
                 </dl>
             </div>
             <h3 class="common_title2">编辑地址</h3>

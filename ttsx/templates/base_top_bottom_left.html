@@ -14,9 +14,9 @@
 		<div class="left_menu_con clearfix">
 			<h3>用户中心</h3>
 			<ul>
-				<li><a href="/user/centerinfo" class="active">· 个人信息</a></li>
-				<li><a href="/user/centerorder">· 全部订单</a></li>
-				<li><a href="/user/centersite">· 收货地址</a></li>
+				<li><a href="/user/centerinfo" {{ active1 |safe }}>· 个人信息</a></li>
+				<li><a href="/user/centerorder" {{ active2|safe }}>· 全部订单</a></li>
+				<li><a href="/user/centersite" {{ active3|safe }}>· 收货地址</a></li>
 			</ul>
 		</div>
 		{% block body3 %}{% endblock body3 %}
