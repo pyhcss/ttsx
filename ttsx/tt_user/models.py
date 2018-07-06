@@ -10,3 +10,6 @@ class UserInfo(models.Model):
     uadder = models.CharField(max_length=100,default="")
     uyoubian = models.CharField(max_length=6,default="")
     utel = models.CharField(max_length=11,default="")
+    isDelete = models.BooleanField(default=False)
+    def __str__(self):
+        return self.uname.encode("utf-8")

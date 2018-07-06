@@ -7,10 +7,9 @@ urlpatterns = [
     url("^nameycl/(\w+)$",views.nameycl),
     url("^login$",views.login),
     url("^pwd_cl$",views.pwd_cl),
-    url("^cookie/(\w+)",views.cookie),
+    url("^cookie/(\w*)",views.cookie),
     url("^centerinfo$",views.centerInfo),
     url("^centersite$",views.centerSite),
-    url("^centersite_cl$", views.centerSite_cl),
     url("^centerorder$",views.centerOrder),
     url("^zhuxiao$",views.zhuxiao),
 

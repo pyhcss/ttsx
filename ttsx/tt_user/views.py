@@ -26,14 +26,6 @@ def register_cl(request):
     upwd2 = post["cpwd"]
     uemail = post["email"]
 
-    # 如果密码不相等　返回到注册页面　不需要
-    # if upwd != upwd2:
-    #     return redirect("/user/register")
-
-    # 判空　不需要了
-    # if uname == "" or upwd == "" or uemail == "":
-    #     return redirect("/user/register")
-
     # 使用sha1加密
     s = sha1()
     s.update(upwd)
@@ -50,13 +42,15 @@ def register_cl(request):
 
 # 跳转到登录界面
 def login(request):
+    user = request.session.get('user', default=None)
+    if user != None:
+        return redirect("/user/centerinfo")
     cookie = request.COOKIES
     uname = ""
     if cookie.has_key("uname"):
         uname = cookie["uname"]
     content = {"title":"天天生鲜－登录","uname":uname}
     return render(request,"tt_user/login.html",content)
-# placeholder="请输入用户名"
 
 
 # 用户登录页密码对比
@@ -75,9 +69,9 @@ def pwd_cl(request):
         elif pwd2 == pwd3 and name == user.uname:
             data = 1
             # 保存登录信息到session
-            request.session["user"] = name
+            request.session['user'] = name
             request.session.set_expiry(0)
-            request.session.clear_expired()
+            # request.session.clear_expired()
     except Exception as e:
         print(e)
     return JsonResponse({'data':data})
@@ -86,7 +80,10 @@ def pwd_cl(request):
 # 用户登录时处理记住用户名
 def cookie(request,name):
     response = HttpResponse()
-    response.set_cookie("uname",name,max_age=1209600)
+    if name != "":
+        response.set_cookie("uname",name,max_age=1209600)
+    else:
+        response.set_cookie("uname",name, max_age=-1)
     return response
 
 
@@ -99,54 +96,34 @@ def centerInfo(request):
     else:
         user = UserInfo.objects.get(uname=user)
         content["title"] = "天天生鲜－用户中心"
-        content["uname"] = user.uname
-        content["uemail"] = user.uemail
-        content['active1'] = 'class ="active"'
-        content['active2'] = ""
-        content['active3'] = ""
-        content['name_show'] = 'style="display: block"'
-        content['name_hide'] = 'style="display:none"'
+        content["user"] = user
+        content['active'] = 1
         content['supername'] = user.uname
     return render(request,"tt_user/user_center_info.html",content)
 
 
-# 跳转到个人中心　收货地址
+# 跳转到用户中心　收货地址
 def centerSite(request):
     user = request.session.get("user",default=None)
     content = {}
     if user == None:
         return redirect("/user/login")
     else:
-        user = UserInfo.objects.get(uname = user)
-        content["title"] = "天天生鲜－用户中心"
-        content["addr"] = user.uadder
-        content["name"] = user.ushou
-        content["tel"] = user.utel
-        content['active1'] = ''
-        content['active2'] = ""
-        content['active3'] = 'class ="active"'
-        content['name_show'] = 'style="display: block"'
-        content['name_hide'] = 'style="display:none"'
-        content['supername'] = user.uname
-    return render(request,"tt_user/user_center_site.html",content)
-
-
-# 更新收货地址
-def centerSite_cl(request):
-    user = request.session.get("user", default=None)
-    if user == None:
-        pass
-    else:
-        newuser = UserInfo.objects.get(uname=user)
-        print(type(newuser))
-        newuser.uadder = request.POST["uaddr"]
-        newuser.ushou = request.POST["uname"]
-        newuser.uyoubian = request.POST["uyoub"]
-        newuser.utel = request.POST["utel"]
-        print(newuser.uname)
-        print(newuser.uadder+newuser.ushou+newuser.uyoubian+newuser.utel)
-        newuser.save()
-    return redirect("/user/centersite")
+        if request.method == 'GET':
+            user = UserInfo.objects.get(uname = user)
+            content["title"] = "天天生鲜－用户中心"
+            content["user"] = user
+            content['active'] = 3
+            content['supername'] = user.uname
+            return render(request,"tt_user/user_center_site.html",content)
+        else:
+            newuser = UserInfo.objects.get(uname=user)
+            newuser.uadder = request.POST["uaddr"]
+            newuser.ushou = request.POST["uname"]
+            newuser.uyoubian = request.POST["uyoub"]
+            newuser.utel = request.POST["utel"]
+            newuser.save()
+            return redirect("/user/centersite")
 
 
 # 跳转到用户中心　全部订单
@@ -157,13 +134,9 @@ def centerOrder(request):
         return redirect("/user/login")
     else:
         user = UserInfo.objects.get(uname = user)
-        content['name_show'] = 'style="display: block"'
-        content['name_hide'] = 'style="display:none"'
         content['supername'] = user.uname
-    content["title"] = "天天生鲜－用户中心"
-    content['active1'] = ''
-    content['active2'] = 'class ="active"'
-    content['active3'] = ''
+        content["title"] = "天天生鲜－用户中心"
+        content['active'] = 2
     return render(request,"tt_user/user_center_order.html",content)
 
 
@@ -181,4 +154,4 @@ def zhuxiao(request):
                 re.delete(i)
         except:
             continue
-    return redirect("/user/login")
+    return redirect("/")

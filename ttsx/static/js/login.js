@@ -90,9 +90,15 @@ $(function () {
         $.ajaxSettings.async = true;
     }
     function cookie() {
-        if($("#jzyhm").is(':checked')){
+        if($("#jzyhm").is(':checked'))
+        {
             $.get("/user/cookie/"+$('#username').val());
         }
+        else
+        {
+            $.get("/user/cookie/")
+        }
+
     }
 
     $('#from_login').submit(function(){

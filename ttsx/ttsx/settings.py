@@ -1,3 +1,4 @@
+#coding=utf-8
 """
 Django settings for ttsx project.
 
@@ -38,6 +39,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "tt_user",
+    "tt_goods",
+    "tinymce",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -107,13 +110,30 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
+# 配置静态文件url
 STATIC_URL = '/static/'
+
+# 配置静态文件的路径
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,"static")
 ]
+
+# 配置session使用redis
 SESSION_ENGINE = "redis_sessions.session"
 SESSION_REDIS_HOST = "localhost"
 SESSION_REDIS_PORT = 6379
 SESSION_REDIS_DB = 0
 SESSION_REDIS_PASSWORD = ""
 SESSION_REDIS_PREFIX = "session"
+
+# 配置测试状态下文件上传路径
+MEDIA_ROOT = os.path.join(BASE_DIR,"static")
+# 配置部署状态下文件上传路径
+# MEDIA_ROOT = "/var/www/ttsx/static/"
+
+# 配置富文本编辑器在admin的显示
+TINYMCE_DEFAULT_CONFIG = {
+    "theme":"advanced",
+    "width":800,
+    "height":400,
+}

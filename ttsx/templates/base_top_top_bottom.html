@@ -1,0 +1,58 @@
+{% extends "base_top_bottom.html" %}
+{% load static from staticfiles %}
+
+{% block body2 %}
+
+<div class="search_bar clearfix">
+    <a href="/" class="logo fl"><img src="{% static 'images/logo.png'%}"></a>
+    <div class="search_con fl">
+        <input type="text" class="input_text fl" name="" placeholder="搜索商品">
+        <input type="button" class="input_btn fr" name="" value="搜索">
+    </div>
+    <div class="guest_cart fr">
+        <a href="#" class="cart_name fl">我的购物车</a>
+        <div class="goods_count fl" id="show_count">1</div>
+    </div>
+</div>
+{% if show == 1 %}
+    <div class="navbar_con">
+		<div class="navbar">
+			<h1 class="fl">全部商品分类</h1>
+			<ul class="navlist fl">
+				<li><a href="/">首页</a></li>
+				<li class="interval">|</li>
+				<li><a href="#">手机生鲜</a></li>
+				<li class="interval">|</li>
+				<li><a href="#">抽奖</a></li>
+			</ul>
+		</div>
+	</div>
+{% elif show == 2 %}
+    <div class="navbar_con">
+		<div class="navbar clearfix">
+			<div class="subnav_con fl">
+				<h1>全部商品分类</h1>
+				<span></span>
+				<ul class="subnav">
+					<li><a href="/goods/list/111" class="fruit">新鲜水果</a></li>
+					<li><a href="/goods/list/211" class="seafood">海鲜水产</a></li>
+					<li><a href="/goods/list/311" class="meet">猪牛羊肉</a></li>
+					<li><a href="/goods/list/411" class="egg">禽类蛋品</a></li>
+					<li><a href="/goods/list/511" class="vegetables">新鲜蔬菜</a></li>
+					<li><a href="/goods/list/611" class="ice">速冻食品</a></li>
+				</ul>
+			</div>
+			<ul class="navlist fl">
+				<li><a href="/">首页</a></li>
+				<li class="interval">|</li>
+				<li><a href="#">手机生鲜</a></li>
+				<li class="interval">|</li>
+				<li><a href="#">抽奖</a></li>
+			</ul>
+		</div>
+	</div>
+{% endif %}
+
+{% block body3 %}{% endblock body3 %}
+
+{% endblock body2 %}

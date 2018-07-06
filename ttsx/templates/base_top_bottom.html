@@ -1,22 +1,35 @@
 {% extends "base_bottom.html" %}
-{% load static from staticfiles %}
+
 {% block body %}
 <div class="header_con">
 		<div class="header">
 			<div class="welcome fl">欢迎来到天天生鲜!</div>
 			<div class="fr">
-				<div class="login_info fl" {{ name_show|safe }}>
+				{% if supername != None %}
+				<div class="login_info fl" style="display: block">
 					欢迎您：<em>{{ supername|safe }}</em>
 					<a href="/user/zhuxiao" class="zhuxiao">注销</a>
 				</div>
-				<div class="login_btn fl" {{ name_hide|safe }}>
-					<a href="{% static '/user/login'%}">登录</a>
+				<div class="login_btn fl" style="display:none">
+					<a href="/user/login">登录</a>
 					<span>|</span>
-					<a href="{% static '/user/register'%}">注册</a>
+					<a href="/user/register">注册</a>
 				</div>
+				{% else %}
+				<div class="login_info fl">
+					欢迎您：<em>""</em>
+					<a href="/user/zhuxiao" class="zhuxiao">注销</a>
+				</div>
+				<div class="login_btn fl">
+					<a href="/user/login">登录</a>
+					<span>|</span>
+					<a href="/user/register">注册</a>
+				</div>
+				{% endif %}
+
 				<div class="user_link fl">
 					<span>|</span>
-					<a href="{% static '/user/centerinfo'%}">用户中心</a>
+					<a href="/user/centerinfo">用户中心</a>
 					<span>|</span>
 					<a href="#">我的购物车</a>
 					<span>|</span>
@@ -25,5 +38,7 @@
 			</div>
 		</div>
 	</div>
+
 {% block body2 %}{% endblock body2 %}
+
 {% endblock body %}

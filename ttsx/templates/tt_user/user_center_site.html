@@ -6,32 +6,32 @@
             <div class="site_con">
                 <dl>
                     <dt>当前地址：</dt>
-                    {% if addr == "" %}
+                    {% if user.uadder == "" %}
                     <dd></dd>
                     {% else %}
-                    <dd>{{ addr }} ( {{name}} 收 ) {{ tel }}</dd>
+                    <dd>{{ user.uadder }} ( {{ user.ushou }} 收 ) {{ user.utel }}</dd>
                     {% endif %}
                 </dl>
             </div>
             <h3 class="common_title2">编辑地址</h3>
             <div class="site_con">
-                <form action="/user/centersite_cl" method="post">
+                <form action="/user/centersite" method="post">
                     {% csrf_token %}
                     <div class="form_group">
                         <label>收件人：</label>
-                        <input type="text" name="uname">
+                        <input type="text" name="uname" value="{{ user.ushou }}">
                     </div>
                     <div class="form_group form_group2">
                         <label>详细地址：</label>
-                        <textarea class="site_area" name="uaddr"></textarea>
+                        <textarea class="site_area" name="uaddr">{{ user.uadder }}</textarea>
                     </div>
                     <div class="form_group">
                         <label>邮编：</label>
-                        <input type="text" name="uyoub">
+                        <input type="text" name="uyoub" value="{{ user.uyoubian }}">
                     </div>
                     <div class="form_group">
                         <label>手机：</label>
-                        <input type="text" name="utel">
+                        <input type="text" name="utel" value="{{ user.utel }}">
                     </div>
 
                     <input type="submit" value="提交" class="info_submit">

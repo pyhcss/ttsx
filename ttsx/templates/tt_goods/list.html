@@ -1,0 +1,82 @@
+{% extends "base_top_top_bottom.html" %}
+{% load static from staticfiles %}
+
+{% block body3 %}
+
+	<div class="breadcrumb">
+		<a href="/">全部分类</a>
+		<span>></span>
+		<span>{{ type.ttitle }}</span>
+	</div>
+
+	<div class="main_wrap clearfix">
+		<div class="l_wrap fl clearfix">
+			<div class="new_goods">
+				<h3>新品推荐</h3>
+				<ul>
+
+					{% for i in newgoods %}
+                    <li>
+                        <a href="/goods/detail/{{ i.id }}"><img src="{% static i.gimg %}"></a>
+                        <h4><a href="/goods/detail/{{ i.id }}">{{ i.gname }}</a></h4>
+                        <div class="prize">￥{{ i.grmb }}</div>
+                    </li>
+					{% endfor %}
+
+				</ul>
+			</div>
+		</div>
+
+		<div class="r_wrap fr clearfix">
+			<div class="sort_bar">
+				{% if paixu == "1" %}
+				<a href="/goods/list/{{ type.id|add:'-1' }}11" class="active">默认</a>
+				<a href="/goods/list/{{ type.id|add:'-1' }}21">价格</a>
+				<a href="/goods/list/{{ type.id|add:'-1' }}31">人气</a>
+				{% elif paixu == "2" %}
+				<a href="/goods/list/{{ type.id|add:'-1' }}11">默认</a>
+				<a href="/goods/list/{{ type.id|add:'-1' }}21" class="active">价格</a>
+				<a href="/goods/list/{{ type.id|add:'-1' }}31">人气</a>
+				{% elif paixu == "3" %}
+				<a href="/goods/list/{{ type.id|add:'-1' }}11">默认</a>
+				<a href="/goods/list/{{ type.id|add:'-1' }}21">价格</a>
+				<a href="/goods/list/{{ type.id|add:'-1' }}31" class="active">人气</a>
+				{% endif %}
+			</div>
+
+			<ul class="goods_type_list clearfix">
+
+				{% for i in goods %}
+				<li>
+					<a href="/goods/detail/{{ i.id }}"><img src="{% static i.gimg %}"></a>
+					<h4><a href="/goods/detail/{{ i.id }}">{{ i.gname }}</a></h4>
+					<div class="operate">
+						<span class="prize">￥{{ i.grmb }}</span>
+						<span class="unit">{{ i.grmb }}/{{ i.gdanwei }}</span>
+						<a href="#" class="add_goods" title="加入购物车"></a>
+					</div>
+				</li>
+				{% endfor %}
+
+			</ul>
+			<div class="pagenation">
+				{% if goods.has_previous == True %}
+					<a href="/goods/list/{{ type.id|add:'-1' }}{{ paixu }}{{ goods.previous_page_number }}">上一页</a>
+				{% endif %}
+
+				{% for i in goods.paginator.page_range %}
+					{% if goods.number == i %}
+					<a class="active">{{ i }}</a>
+					{% else %}
+					<a href="/goods/list/{{ type.id|add:'-1' }}{{ paixu }}{{ i }}">{{ i }}</a>
+					{% endif %}
+				{% endfor %}
+
+				{% if goods.has_next == True %}
+				<a href="/goods/list/{{ type.id|add:'-1' }}{{ paixu }}{{ goods.next_page_number }}">下一页></a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+{% endblock body3 %}
+
