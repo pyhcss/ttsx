@@ -126,6 +126,9 @@
 			});
         });
 		$('#shuliang').change(function(){
+		    $('#shuliang').val(function () {
+				return parseInt($('#shuliang').val());
+            });
 		    jieguo();
 		    if($('#shuliang').val()<1){
 			    $('#shuliang').val(1);
@@ -137,15 +140,12 @@
 			}
 		});
 
-
 		function jieguo() {
 		    var num1 = parseInt($('#shuliang').val());
 		    var num2 = parseFloat($('#danjia').html());
 			$('#zongjia').html(function () {
 			    return ((num1*100)*(num2*100)/10000).toFixed(2);
 			});
-
-
         }
 
 

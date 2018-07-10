@@ -1,5 +1,6 @@
 #coding=utf-8
 from django.shortcuts import render
+from django.http import HttpResponse
 from tt_user.models import *
 from models import *
 from django.core.paginator import Paginator
@@ -10,11 +11,13 @@ def index(request):
     content = {}
     # 判断用户是否登录
     user = request.session.get('user', default=None)
-    if user == None:
-        content['supername'] = None
-    else:
+    try:
         user = UserInfo.objects.get(uname=user)
-        content['supername'] = user.uname
+    except Exception as e:
+        print(e)
+        content['user'] = None
+    else:
+        content['user'] = user
     typelist = TypeGoods.objects.filter(isDelete=False)
     # 查询所有商品分类
     goods1 = typelist[0].goods_set.filter(isDelete=False).order_by("-id")[:4]
@@ -48,11 +51,13 @@ def goodslist(request,type,px,xh):
     content = {}
     # 判断用户是否登录
     user = request.session.get('user', default=None)
-    if user == None:
-        content['supername'] = None
-    else:
+    try:
         user = UserInfo.objects.get(uname=user)
-        content['supername'] = user.uname
+    except Exception as e:
+        print(e)
+        content['user'] = None
+    else:
+        content['user'] = user
     content["title"] = "天天生鲜－商品列表"
     content["show"] = 2 # show 页面显示方式
     typelist = TypeGoods.objects.filter(isDelete=False) # 获取所有商品列表
@@ -77,19 +82,37 @@ def goodslist(request,type,px,xh):
 def detail(request,id):
     id = int(id)
     content = {}
-    content["show"] = 2
     # 判断用户是否登录
     user = request.session.get('user', default=None)
-    if user == None:
-        content['supername'] = None
-    else:
+    try:
         user = UserInfo.objects.get(uname=user)
-        content['supername'] = user.uname
-    content["title"] = "天天生鲜－商品详情"
+    except Exception as e:
+        print(e)
+        content['user'] = None
+    else:
+        content['user'] = user
+    # 记录用户点击量　修改数据
     goods = Goods.objects.get(pk=id)
     goods.gliulan = goods.gliulan + 1
     goods.save()
-    content["goods"] = goods
+    content["goods"] = goods # 传递当前商品信息
+    content["title"] = "天天生鲜－商品详情"
+    content["show"] = 2 # show 页面显示方式
+    # 传递两个最新商品
     newgoods = Goods.objects.filter(isDelete=False).order_by("-id")[:2]
     content["newgoods"] = newgoods
-    return render(request,"tt_goods/detail.html",content)
+    response = render(request,"tt_goods/detail.html",content)
+    # 用cookie记录用户的浏览记录
+    cookie = request.COOKIES.get("liulan","")   # 获取cookie中的浏览信息
+    if cookie == "":                            # 如果浏览信息为空、则直接添加
+        liulanstr = "%s"%goods.id
+    else:
+        liulan = cookie.split("-")              # 把字符串分割成列表
+        if liulan.count("%s"%goods.id) >= 1 :   # 判断列表中是否已经有这个商品id
+            liulan.remove("%s"%goods.id)
+        liulan.insert(0,"%s"%goods.id)          # 把商品id添加到列表第一个元素
+        if len(liulan) >= 6:                    # 判断列表是否大于６
+            del liulan[-1]
+        liulanstr ="-".join(liulan)             # 用字符串拼接列表
+    response.set_cookie("liulan",liulanstr,None)# 设置cookie
+    return response

@@ -1,9 +1,10 @@
 #coding=utf-8
 from django.shortcuts import render,redirect
-from django.http import JsonResponse,HttpResponse
+from django.http import JsonResponse,HttpResponse,HttpResponseRedirect
 from hashlib import sha1
 from models import *
-import redis,base64
+from tt_goods.models import *
+import redis,base64,user_decorator
 
 
 # 跳转到注册界面
@@ -43,9 +44,15 @@ def register_cl(request):
 # 跳转到登录界面
 def login(request):
     user = request.session.get('user', default=None)
-    if user != None:
-        return redirect("/user/centerinfo")
     cookie = request.COOKIES
+    # 判断用户是否已经登录
+    if user != None:
+        url = cookie.get("url","/")
+        rspred = HttpResponseRedirect(url)
+        if cookie.has_key("url"):
+            rspred.set_cookie("url","",max_age=-1)
+        return rspred
+    # 判断用户是否选择记住用户名
     uname = ""
     if cookie.has_key("uname"):
         uname = cookie["uname"]
@@ -71,7 +78,6 @@ def pwd_cl(request):
             # 保存登录信息到session
             request.session['user'] = name
             request.session.set_expiry(0)
-            # request.session.clear_expired()
     except Exception as e:
         print(e)
     return JsonResponse({'data':data})
@@ -87,56 +93,56 @@ def cookie(request,name):
     return response
 
 
-# 跳转到用户中心 个人信息
+# 跳转到用户中心 个人信息 装饰器为登录验证
+@user_decorator.login
 def centerInfo(request):
     user = request.session.get('user',default=None)
     content = {}
-    if user == None:
-        return redirect("/user/login")
-    else:
-        user = UserInfo.objects.get(uname=user)
-        content["title"] = "天天生鲜－用户中心"
-        content["user"] = user
-        content['active'] = 1
-        content['supername'] = user.uname
+    user = UserInfo.objects.get(uname=user)
+    content["title"] = "天天生鲜－用户中心"
+    content["user"] = user
+    content['active'] = 1
+    cookie = request.COOKIES.get("liulan",None) # 接收cookie中的最近浏览信息
+    liulanlist = []
+    if cookie != None:
+        liulan = cookie.split("-")              # 分割字符串、返回列表
+        for i in liulan:
+            goods = Goods.objects.get(id=i)     # 拿到id对应的商品并构成列表返回
+            liulanlist.append(goods)
+    content["liulan"] = liulanlist
     return render(request,"tt_user/user_center_info.html",content)
 
 
-# 跳转到用户中心　收货地址
+# 跳转到用户中心　收货地址 装饰器为登录验证
+@user_decorator.login
 def centerSite(request):
     user = request.session.get("user",default=None)
     content = {}
-    if user == None:
-        return redirect("/user/login")
+    if request.method == 'GET':
+        user = UserInfo.objects.get(uname = user)
+        content["title"] = "天天生鲜－用户中心"
+        content["user"] = user
+        content['active'] = 3
+        return render(request,"tt_user/user_center_site.html",content)
     else:
-        if request.method == 'GET':
-            user = UserInfo.objects.get(uname = user)
-            content["title"] = "天天生鲜－用户中心"
-            content["user"] = user
-            content['active'] = 3
-            content['supername'] = user.uname
-            return render(request,"tt_user/user_center_site.html",content)
-        else:
-            newuser = UserInfo.objects.get(uname=user)
-            newuser.uadder = request.POST["uaddr"]
-            newuser.ushou = request.POST["uname"]
-            newuser.uyoubian = request.POST["uyoub"]
-            newuser.utel = request.POST["utel"]
-            newuser.save()
-            return redirect("/user/centersite")
+        newuser = UserInfo.objects.get(uname=user)
+        newuser.uadder = request.POST["uaddr"]
+        newuser.ushou = request.POST["uname"]
+        newuser.uyoubian = request.POST["uyoub"]
+        newuser.utel = request.POST["utel"]
+        newuser.save()
+        return redirect("/user/centersite")
 
 
-# 跳转到用户中心　全部订单
+# 跳转到用户中心　全部订单 装饰器为登录验证
+@user_decorator.login
 def centerOrder(request):
     user = request.session.get("user", default=None)
     content = {}
-    if user == None:
-        return redirect("/user/login")
-    else:
-        user = UserInfo.objects.get(uname = user)
-        content['supername'] = user.uname
-        content["title"] = "天天生鲜－用户中心"
-        content['active'] = 2
+    user = UserInfo.objects.get(uname = user)
+    content['user'] = user
+    content["title"] = "天天生鲜－用户中心"
+    content['active'] = 2
     return render(request,"tt_user/user_center_order.html",content)
 
 

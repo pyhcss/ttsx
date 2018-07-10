@@ -5,9 +5,9 @@
 		<div class="header">
 			<div class="welcome fl">欢迎来到天天生鲜!</div>
 			<div class="fr">
-				{% if supername != None %}
+				{% if user.uname != None %}
 				<div class="login_info fl" style="display: block">
-					欢迎您：<em>{{ supername|safe }}</em>
+					欢迎您：<em>{{ user.uname|safe }}</em>
 					<a href="/user/zhuxiao" class="zhuxiao">注销</a>
 				</div>
 				<div class="login_btn fl" style="display:none">
