@@ -53,7 +53,12 @@
 					<div class="operate">
 						<span class="prize">￥{{ i.grmb }}</span>
 						<span class="unit">{{ i.grmb }}/{{ i.gdanwei }}</span>
-						<a href="#" class="add_goods" title="加入购物车"></a>
+						{% if user == None %}
+						<a href="/cart/cartadd/0/{{ i.id }}/0" class="add_goods" title="加入购物车"></a>
+						{% else %}
+						<a href="javascript:;" class="add_goods" title="加入购物车"></a>
+						{% endif %}
+						<span id="spanid" style="display: none">{{ i.id }}</span>
 					</div>
 				</li>
 				{% endfor %}
@@ -79,4 +84,14 @@
 		</div>
 	</div>
 {% endblock body3 %}
+
+{% block body_bottom %}
+<script>
+	$(".add_goods").click(function () {
+		$.get("/cart/cartadd/{{ user.id|default:0 }}/"+$(this).next().html()+"/1",function (data) {
+			$("#show_count").html(data.data)
+        });
+    });
+</script>
+{% endblock body_bottom %}
 

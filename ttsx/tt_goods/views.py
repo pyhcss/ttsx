@@ -2,6 +2,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from tt_user.models import *
+from tt_cart.models import *
 from models import *
 from django.core.paginator import Paginator
 
@@ -18,6 +19,8 @@ def index(request):
         content['user'] = None
     else:
         content['user'] = user
+        num = CartInfo.objects.filter(cuser=user).count()
+        content['count'] = num
     typelist = TypeGoods.objects.filter(isDelete=False)
     # 查询所有商品分类
     goods1 = typelist[0].goods_set.filter(isDelete=False).order_by("-id")[:4]
@@ -58,6 +61,8 @@ def goodslist(request,type,px,xh):
         content['user'] = None
     else:
         content['user'] = user
+        num = CartInfo.objects.filter(cuser=user).count()
+        content['count'] = num
     content["title"] = "天天生鲜－商品列表"
     content["show"] = 2 # show 页面显示方式
     typelist = TypeGoods.objects.filter(isDelete=False) # 获取所有商品列表
@@ -91,6 +96,8 @@ def detail(request,id):
         content['user'] = None
     else:
         content['user'] = user
+        num = CartInfo.objects.filter(cuser=user).count()
+        content['count'] = num
     # 记录用户点击量　修改数据
     goods = Goods.objects.get(pk=id)
     goods.gliulan = goods.gliulan + 1

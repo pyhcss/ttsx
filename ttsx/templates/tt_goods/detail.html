@@ -32,7 +32,11 @@
 			<div class="total">总价：<em id="zongjia">{{ goods.grmb }}</em>元</div>
 			<div class="operate_btn">
 				<a href="javascript:;" class="buy_btn">立即购买</a>
-				<a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>				
+				{% if user == None %}
+				<a href="/cart/cartadd/0/{{ goods.id }}/0" class="add_cart" id="add_cart">加入购物车</a>
+				{% else %}
+				<a href="javascript:;" class="add_cart" id="add_cart" >加入购物车</a>
+				{% endif %}
 			</div>
 		</div>
 	</div>
@@ -73,6 +77,7 @@
 {% endblock body3 %}
 
 {% block body_bottom %}
+	{% if user != None %}
 	<div class="add_jump"></div>
 
 	<script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js'%}"></script>
@@ -90,13 +95,16 @@
 				'top': $to_x+7},
 				"fast", function() {
 					$(".add_jump").fadeOut('fast',function(){
-						$('#show_count').html(2);
+						$('#show_count').html();
 					});
 
 			});
 		})
 	</script>
+	{% endif %}
+
 	<script>
+
 		$('#jiahao').mousedown(function () {
             var num = $('#shuliang').val();
             if($('#shuliang').val() < {{ goods.gkucun }})
@@ -111,6 +119,7 @@
 			    return ((num1*100)*(num2*100)/10000).toFixed(2);
 			});
         });
+
 		$('#jianhao').mousedown(function () {
             var num = $('#shuliang').val();
             if($('#shuliang').val() > 1)
@@ -125,6 +134,7 @@
 			    return ((num1*100)*(num2*100)/10000).toFixed(2);
 			});
         });
+
 		$('#shuliang').change(function(){
 		    $('#shuliang').val(function () {
 				return parseInt($('#shuliang').val());
@@ -148,6 +158,15 @@
 			});
         }
 
+		{% if user != None %}
+
+		$('#add_cart').mousedown(function () {
+			$.get("/cart/cartadd/{{ user.id }}/{{ goods.id }}/"+$('#shuliang').val(),function (data) {
+				$("#show_count").html(data.data)
+            })
+        });
+
+		{% endif %}
 
 
 

@@ -1,0 +1,160 @@
+{% extends 'base_top_bottom.html'%}
+{% load static from staticfiles %}
+
+
+{% block body2 %}
+	<div class="search_bar clearfix">
+		<a href="/" class="logo fl"><img src="{% static 'images/logo.png' %}"></a>
+		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;购物车</div>
+		<div class="search_con fr">
+			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
+			<input type="button" class="input_btn fr" name="" value="搜索">
+		</div>		
+	</div>
+
+	<div class="total_count">全部商品<em>{{ carts.count }}</em>件</div>
+	<ul class="cart_list_th clearfix">
+		<li class="col01">商品名称</li>
+		<li class="col02">商品单位</li>
+		<li class="col03">商品单价</li>
+		<li class="col04">数量</li>
+		<li class="col05">小计</li>
+		<li class="col06">操作</li>
+	</ul>
+
+	{% for i in carts %}
+	<ul class="cart_list_td clearfix">
+		<li class="col01"><input type="checkbox" name="" checked></li>
+		<li class="col02"><img src="{% static i.cgoods.gimg %}"></li>
+		<li class="col03">{{ i.cgoods.gname }}<br><em>{{ i.cgoods.grmb }}元/{{ i.cgoods.gdanwei }}</em></li>
+		<li class="col04">{{ i.cgoods.gdanwei }}</li>
+		<li class="col05">{{ i.cgoods.grmb }}元</li>
+		<li class="col06">
+			<div class="num_add">
+				<a href="javascript:;" class="add fl">+</a>
+				<input type="text" class="num_show fl" value="{{ i.count }}">
+				<a href="javascript:;" class="minus fl">-</a>
+				<span class="kucun" style="display: none">{{ i.cgoods.gkucun }}</span>
+				<span class="goodsid" style="display: none">{{ i.cgoods.id }}</span>
+			</div>
+		</li>
+		<li class="col07">25.6元</li>
+		<li class="col08"><a href="/cart/revcart/{{ i.cuser.id }}/{{ i.cgoods.id }}/0">删除</a></li>
+
+	</ul>
+	{% endfor %}
+
+	<ul class="settlements">
+		<li class="col01"><input type="checkbox" id="check_all" name="" checked=""></li>
+		<li class="col02">全选</li>
+		<li class="col03">合计(不含运费)：<span>¥</span><em id="zong">42.60</em><br>共计<b id="zongshu">{{ carts.count }}</b>件商品</li>
+		<li class="col04"><a href="place_order.html">去结算</a></li>
+	</ul>
+
+{% endblock body2 %}
+
+{% block body_bottom %}
+	<script>
+		xiaoji();
+        zongji();
+
+
+		$(".add").mousedown(function () {
+		    var num = parseInt($(this).next().val());
+		    if(num < parseInt($(this).nextAll().filter(".kucun").html())){
+		        $.get("/cart/cartadd/{{ user.id }}/"+parseInt($(this).nextAll().filter(".goodsid").html())+"/1");
+		        $(this).next().val(function () {
+				return num * 1 + 1;
+            	});
+			}
+			else{
+		        $(this).next().val(function () {
+				return parseInt($(this).nextAll().filter(".kucun").html());
+            	});
+			}
+			xiaoji();
+            zongji();
+		});
+
+        $(".minus").mousedown(function () {
+        	var num = parseInt($(this).prev().val());
+        	if(num > 1){
+            	$.get("/cart/cartadd/{{ user.id }}/"+parseInt($(this).nextAll().filter(".goodsid").html())+"/-1");
+            	$(this).prev().val(function () {
+            	return num * 1 - 1;
+            	});
+        	}
+        	else{
+            	$(this).prev().val(function () {
+            	return 1;
+            });
+        	}
+        	xiaoji();
+            zongji();
+    	});
+
+        $(".num_show").change(function(){
+            var num = parseInt($(this).val());
+            if(num > parseInt($(this).nextAll().filter(".kucun").html()))
+            {
+		        $(this).val(function () {
+				return parseInt($(this).nextAll().filter(".kucun").html());
+            	});
+			}
+			else if(num < 1){
+            	$(this).val(function () {
+            	return 1;
+            	});
+        	}
+        	else{
+                $(this).val(function () {
+            	return num;
+            	});
+			}
+            $.get("/cart/revcart/{{ user.id }}/"+parseInt($(this).nextAll().filter(".goodsid").html())+"/"+parseInt($(this).val()));
+			xiaoji();
+            zongji();
+		});
+
+        $("#check_all").click(function () {
+			$("input[type='checkbox']").not($("#check_all")).each(function () {
+				$(this).prop("checked",$("#check_all").prop("checked"));
+
+            });
+			zongji();
+            $("#zongshu").html($("input[type='checkbox']:checked").not($("#check_all")).length);
+        });
+
+        $("input[type='checkbox']").not($("#check_all")).click(function () {
+			if($(this).prop("checked") == false){
+			    $("#check_all").prop("checked",false);
+			}
+			else if($("input[type='checkbox']:checked").not($("#check_all")).length == $("input[type='checkbox']").not($("#check_all")).length){
+			    $("#check_all").prop("checked",true);
+			}
+            zongji();
+            $("#zongshu").html($("input[type='checkbox']:checked").not($("#check_all")).length);
+
+        });
+
+
+		function xiaoji() {
+			$(".col07").html(function () {
+			num1 = parseFloat($(this).prevAll().filter(".col05").html());
+			num2 = parseInt($(this).prevAll().filter(".col06").find(".num_show").val());
+			return ((num1*100)*(num2*100)/10000).toFixed(2)+"元";
+        	})
+        }
+
+        function zongji(){
+		    var zong = 0;
+		    $("input[type='checkbox']").not($("#check_all")).each(function () {
+				if($(this).prop("checked")){
+				    zong += parseFloat($(this).parent().nextAll().filter(".col07").html());
+				}
+            });
+			$("#zong").html(zong.toFixed(2));
+		}
+	</script>
+{% endblock body_bottom %}
+

@@ -52,7 +52,7 @@ def login(request):
         if cookie.has_key("url"):
             rspred.set_cookie("url","",max_age=-1)
         return rspred
-    # 判断用户是否选择记住用户名
+    # 判断用户本地是否有用户名信息
     uname = ""
     if cookie.has_key("uname"):
         uname = cookie["uname"]
