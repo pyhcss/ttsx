@@ -31,7 +31,7 @@
 			</div>
 			<div class="total">总价：<em id="zongjia">{{ goods.grmb }}</em>元</div>
 			<div class="operate_btn">
-				<a href="javascript:;" class="buy_btn">立即购买</a>
+				<a href="javascript:;" class="buy_btn" id="buy_btn">立即购买</a>
 				{% if user == None %}
 				<a href="/cart/cartadd/0/{{ goods.id }}/0" class="add_cart" id="add_cart">加入购物车</a>
 				{% else %}
@@ -168,6 +168,11 @@
 
 		{% endif %}
 
+		$("#buy_btn").click(function () {
+            $(this).attr("href",function () {
+				return "/order/orderinfo/{{ goods.id }}/"+$('#shuliang').val();
+            });
+        });
 
 
 	</script>

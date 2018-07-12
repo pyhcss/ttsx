@@ -1,9 +1,11 @@
 #coding=utf-8
 from django.shortcuts import render,redirect
 from django.http import JsonResponse,HttpResponse,HttpResponseRedirect
+from django.core.paginator import Paginator
 from hashlib import sha1
 from models import *
 from tt_goods.models import *
+from tt_order.models import *
 import redis,base64,user_decorator
 
 
@@ -49,10 +51,11 @@ def login(request):
     if user != None:
         url = cookie.get("url","/")
         rspred = HttpResponseRedirect(url)
+        # 如果用户有储存url 则注销url的cookie
         if cookie.has_key("url"):
             rspred.set_cookie("url","",max_age=-1)
         return rspred
-    # 判断用户本地是否有用户名信息
+    # 判断用户本地cookie是否有用户名信息
     uname = ""
     if cookie.has_key("uname"):
         uname = cookie["uname"]
@@ -118,12 +121,14 @@ def centerInfo(request):
 def centerSite(request):
     user = request.session.get("user",default=None)
     content = {}
+    # 如果是get提交、是来获取信息的
     if request.method == 'GET':
         user = UserInfo.objects.get(uname = user)
         content["title"] = "天天生鲜－用户中心"
         content["user"] = user
         content['active'] = 3
         return render(request,"tt_user/user_center_site.html",content)
+    # 如果是POST提交、是来修改信息的
     else:
         newuser = UserInfo.objects.get(uname=user)
         newuser.uadder = request.POST["uaddr"]
@@ -136,13 +141,24 @@ def centerSite(request):
 
 # 跳转到用户中心　全部订单 装饰器为登录验证
 @user_decorator.login
-def centerOrder(request):
+def centerOrder(request,id):
+    print(id)
     user = request.session.get("user", default=None)
     content = {}
     user = UserInfo.objects.get(uname = user)
     content['user'] = user
     content["title"] = "天天生鲜－用户中心"
     content['active'] = 2
+    content["order"] = None
+    try: # 拿到用户的订单　分页返回
+        order = OrderInfo.objects.filter(ouser=user)
+        paginator = Paginator(order,2)
+        if id == "":
+            id = 1
+        page = paginator.page(int(id))
+        content["order"] = page
+    except Exception as e:
+        print(e)
     return render(request,"tt_user/user_center_order.html",content)
 
 

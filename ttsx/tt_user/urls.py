@@ -10,7 +10,7 @@ urlpatterns = [
     url("^cookie/(\w*)",views.cookie),
     url("^centerinfo$",views.centerInfo),
     url("^centersite$",views.centerSite),
-    url("^centerorder$",views.centerOrder),
+    url("^centerorder/?(\d*)$",views.centerOrder),
     url("^zhuxiao$",views.zhuxiao),
 
 ]

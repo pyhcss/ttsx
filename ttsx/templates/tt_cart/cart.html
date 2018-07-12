@@ -23,7 +23,7 @@
 	</ul>
 
 	{% for i in carts %}
-	<ul class="cart_list_td clearfix">
+	<ul class="cart_list_td clearfix" id="{{ i.id }}">
 		<li class="col01"><input type="checkbox" name="" checked></li>
 		<li class="col02"><img src="{% static i.cgoods.gimg %}"></li>
 		<li class="col03">{{ i.cgoods.gname }}<br><em>{{ i.cgoods.grmb }}元/{{ i.cgoods.gdanwei }}</em></li>
@@ -48,7 +48,7 @@
 		<li class="col01"><input type="checkbox" id="check_all" name="" checked=""></li>
 		<li class="col02">全选</li>
 		<li class="col03">合计(不含运费)：<span>¥</span><em id="zong">42.60</em><br>共计<b id="zongshu">{{ carts.count }}</b>件商品</li>
-		<li class="col04"><a href="place_order.html">去结算</a></li>
+		<li class="col04"><a href="javascript:;" id="jiesuan">去结算</a></li>
 	</ul>
 
 {% endblock body2 %}
@@ -57,9 +57,12 @@
 	<script>
 		xiaoji();
         zongji();
+        if($("input[type='checkbox']:checked").not($("#check_all")).length <= 0){
+        	$("#jiesuan").css("background-color",'#fff4e8');
+		}
 
 
-		$(".add").mousedown(function () {
+		$(".add").click(function () {
 		    var num = parseInt($(this).next().val());
 		    if(num < parseInt($(this).nextAll().filter(".kucun").html())){
 		        $.get("/cart/cartadd/{{ user.id }}/"+parseInt($(this).nextAll().filter(".goodsid").html())+"/1");
@@ -76,7 +79,7 @@
             zongji();
 		});
 
-        $(".minus").mousedown(function () {
+        $(".minus").click(function () {
         	var num = parseInt($(this).prev().val());
         	if(num > 1){
             	$.get("/cart/cartadd/{{ user.id }}/"+parseInt($(this).nextAll().filter(".goodsid").html())+"/-1");
@@ -155,6 +158,27 @@
             });
 			$("#zong").html(zong.toFixed(2));
 		}
+
+
+		$("#jiesuan").click(function () {
+		    if($("input[type='checkbox']:checked").not($("#check_all")).length <= 0){
+			    return false;
+			}
+			else{
+		        $(this).attr("href",cart());
+			}
+
+        });
+
+		function cart() {
+		    // var cartt = {};
+			var url="/order/orderinfo?";
+			$("input[type='checkbox']:checked").not($("#check_all")).each(function (i) {
+				url += "cart" + i + "=" + $(this).parents(".cart_list_td").attr("id") +"&";
+			});
+			return url;
+        }
+
 	</script>
 {% endblock body_bottom %}
 
