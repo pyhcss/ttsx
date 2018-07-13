@@ -1,0 +1,34 @@
+{% extends "base_top_bottom_left.html" %}
+{% load static from staticfiles %}
+
+{% block body3 %}
+		<div class="right_content clearfix">
+				<div class="info_con clearfix">
+				<h3 class="common_title2">基本信息</h3>
+						<ul class="user_info_list">
+							<li><span>用户名：</span>{{ user.uname }}</li>
+							<li><span>邮　箱：</span>{{ user.uemail }}</li>
+						</ul>
+				</div>
+				
+				<h3 class="common_title2">最近浏览</h3>
+				<div class="has_view_list">
+					<ul class="goods_type_list clearfix">
+
+				{% for i in liulan %}
+				<li>
+					<a href="/goods/detail/{{ i.id }}"><img src="{% static i.gimg %}"></a>
+					<h4><a href="/goods/detail/{{ i.id }}">大兴大棚草莓</a></h4>
+					<div class="operate">
+						<span class="prize">￥{{ i.grmb }}</span>
+						<span class="unit">{{ i.grmb }}/{{ i.gdanwei }}</span>
+						<a href="#" class="add_goods" title="加入购物车"></a>
+					</div>
+				</li>
+				{% endfor %}
+
+			</ul>
+		</div>
+		</div>
+{% endblock body3 %}
+

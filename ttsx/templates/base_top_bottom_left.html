@@ -1,0 +1,36 @@
+{% extends "base_top_bottom.html" %}
+{% load static from staticfiles %}
+
+{% block body2 %}
+	<div class="search_bar clearfix">
+		<a href="/" class="logo fl"><img src="{% static 'images/logo.png'%}"></a>
+		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;用户中心</div>
+		<div class="search_con fr">
+			<form method="get" action="/search/" target="_blank">
+				<input type="text" class="input_text fl" name="q" placeholder="搜索商品">
+				<input type="submit" class="input_btn fr" value="搜索">
+        	</form>
+		</div>
+	</div>
+	<div class="main_con clearfix">
+		<div class="left_menu_con clearfix">
+			<h3>用户中心</h3>
+			<ul>
+				{% if active == 1 %}
+				<li><a href="/user/centerinfo" class ="active">· 个人信息</a></li>
+				<li><a href="/user/centerorder">· 全部订单</a></li>
+				<li><a href="/user/centersite">· 收货地址</a></li>
+				{% elif active == 2 %}
+				<li><a href="/user/centerinfo">· 个人信息</a></li>
+				<li><a href="/user/centerorder" class ="active">· 全部订单</a></li>
+				<li><a href="/user/centersite">· 收货地址</a></li>
+				{% elif active == 3 %}
+				<li><a href="/user/centerinfo">· 个人信息</a></li>
+				<li><a href="/user/centerorder">· 全部订单</a></li>
+				<li><a href="/user/centersite" class ="active">· 收货地址</a></li>
+				{% endif %}
+			</ul>
+		</div>
+		{% block body3 %}{% endblock body3 %}
+    </div>
+{% endblock body2 %}

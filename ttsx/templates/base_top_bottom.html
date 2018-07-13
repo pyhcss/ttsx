@@ -1,0 +1,44 @@
+{% extends "base_bottom.html" %}
+
+{% block body %}
+<div class="header_con">
+		<div class="header">
+			<div class="welcome fl">欢迎来到天天生鲜!</div>
+			<div class="fr">
+				{% if user.uname != None %}
+				<div class="login_info fl" style="display: block">
+					欢迎您：<em>{{ user.uname|safe }}</em>
+					<a href="/user/zhuxiao" class="zhuxiao">注销</a>
+				</div>
+				<div class="login_btn fl" style="display:none">
+					<a href="/user/login">登录</a>
+					<span>|</span>
+					<a href="/user/register">注册</a>
+				</div>
+				{% else %}
+				<div class="login_info fl">
+					欢迎您：<em>""</em>
+					<a href="/user/zhuxiao" class="zhuxiao">注销</a>
+				</div>
+				<div class="login_btn fl">
+					<a href="/user/login">登录</a>
+					<span>|</span>
+					<a href="/user/register">注册</a>
+				</div>
+				{% endif %}
+
+				<div class="user_link fl">
+					<span>|</span>
+					<a href="/user/centerinfo">用户中心</a>
+					<span>|</span>
+					<a href="/cart/cartinfo">我的购物车</a>
+					<span>|</span>
+					<a href="/user/centerorder">我的订单</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% block body2 %}{% endblock body2 %}
+
+{% endblock body %}
