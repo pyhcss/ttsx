@@ -123,3 +123,37 @@ def detail(request,id):
         liulanstr ="-".join(liulan)             # 用字符串拼接列表
     response.set_cookie("liulan",liulanstr,None)# 设置cookie
     return response
+
+
+def user(request,count):
+    user = request.session.get('user', default=None)
+    if count == "":
+        try:
+            user = UserInfo.objects.get(uname=user)
+        except Exception as e:
+            print(e)
+            return None
+        else:
+            return user
+    elif count != "":
+        try:
+            user = UserInfo.objects.get(uname=user)
+            cartcount = CartInfo.objects.filter(cuser=user).count()
+        except Exception as e:
+            print(e)
+            return 0
+        else:
+            return cartcount
+
+
+from haystack.views import SearchView
+class MySearchViews(SearchView):
+    def extra_context(self):
+        content = super(MySearchViews,self).extra_context()
+        content["title"] = "天天生鲜－搜索"
+        content["show"] = 2
+        content["user"] = user(self.request,"")
+        content["count"] = user(self.request,1)
+        newgoods = Goods.objects.filter(isDelete=False).order_by("-id")[:2]
+        content["newgoods"] = newgoods
+        return content

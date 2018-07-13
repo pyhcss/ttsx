@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "haystack",
     "tt_user",
     "tt_goods",
     "tinymce",
@@ -139,3 +140,18 @@ TINYMCE_DEFAULT_CONFIG = {
     "width":800,
     "height":400,
 }
+
+# 添加搜索引擎
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_cn_backend.WhooshEngine',
+        # 指定使用的搜索引擎
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+        # 指定索引文件存放位置
+    }
+}
+
+#新增的数据自动生成索引
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+# 分页输出
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10

@@ -23,9 +23,9 @@ def cartInfo(request):
 
 
 # 执行登录验证
-@user_decorator.login
 # 后台处理新增购物车信息
 # 用户id 商品id　商品数量
+@user_decorator.login
 def cartadd(request,userid,goodsid,count):
     # 用户添加购物车登录成功后继续转到商品页面
     if userid == '0' and count == '0':
