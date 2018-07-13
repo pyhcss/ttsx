@@ -1,0 +1,179 @@
+{% extends "base_top_top_bottom.html" %}
+{% load static from staticfiles %}
+
+{% block body3 %}
+
+	<div class="breadcrumb">
+		<a href="/">全部分类</a>
+		<span>></span>
+		<a href="/goods/list/{{ goods.typegoods.id|add:'-1' }}11">{{ goods.typegoods }}</a>
+		<span>></span>
+		<span>商品详情</span>
+	</div>
+
+	<div class="goods_detail_con clearfix">
+		<div class="goods_detail_pic fl"><img src="{% static goods.gimg %}"></div>
+
+		<div class="goods_detail_list fr">
+			<h3>{{ goods.gname }}</h3>
+			<p>{{ goods.gjianjie }}</p>
+			<div class="prize_bar">
+				<span class="show_pirze">¥<em id="danjia">{{ goods.grmb }}</em></span>
+				<span class="show_unit">单  位：{{ goods.gdanwei }}</span>
+			</div>
+			<div class="goods_num clearfix">
+				<div class="num_name fl">数 量：</div>
+				<div class="num_add fl">
+					<input type="text" class="num_show fl" id="shuliang" value="1">
+					<a href="javascript:;" class="add fr" id="jiahao">+</a>
+					<a href="javascript:;" class="minus fr" id="jianhao">-</a>
+				</div> 
+			</div>
+			<div class="total">总价：<em id="zongjia">{{ goods.grmb }}</em>元</div>
+			<div class="operate_btn">
+				<a href="javascript:;" class="buy_btn" id="buy_btn">立即购买</a>
+				{% if user == None %}
+				<a href="/cart/cartadd/0/{{ goods.id }}/0" class="add_cart" id="add_cart">加入购物车</a>
+				{% else %}
+				<a href="javascript:;" class="add_cart" id="add_cart" >加入购物车</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+	<div class="main_wrap clearfix">
+		<div class="l_wrap fl clearfix">
+			<div class="new_goods">
+				<h3>新品推荐</h3>
+				<ul>
+
+					{% for i in newgoods %}
+					<li>
+						<a href="/goods/detail/{{ i.id }}"><img src="{% static i.gimg %}"></a>
+						<h4><a href="/goods/detail/{{ i.id }}">{{ i.gname }}</a></h4>
+						<div class="prize">￥{{ i.grmb }}</div>
+					</li>
+					{% endfor %}
+
+				</ul>
+			</div>
+		</div>
+
+		<div class="r_wrap fr clearfix">
+			<ul class="detail_tab clearfix">
+				<li class="active">商品介绍</li>
+				<li>评论</li>
+			</ul>
+
+			<div class="tab_content">
+				<dl>
+					<dt>商品详情：</dt>
+					<dd>{{ goods.gjieshao|safe }}</dd>
+				</dl>
+			</div>
+
+		</div>
+	</div>
+{% endblock body3 %}
+
+{% block body_bottom %}
+	{% if user != None %}
+	<div class="add_jump"></div>
+
+	<script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js'%}"></script>
+	<script type="text/javascript">
+		var $add_x = $('#add_cart').offset().top;
+		var $add_y = $('#add_cart').offset().left;
+
+		var $to_x = $('#show_count').offset().top;
+		var $to_y = $('#show_count').offset().left;
+
+		$(".add_jump").css({'left':$add_y+80,'top':$add_x+10,'display':'block'})
+		$('#add_cart').click(function(){
+			$(".add_jump").stop().animate({
+				'left': $to_y+7,
+				'top': $to_x+7},
+				"fast", function() {
+					$(".add_jump").fadeOut('fast',function(){
+						$('#show_count').html();
+					});
+
+			});
+		})
+	</script>
+	{% endif %}
+
+	<script>
+
+		$('#jiahao').mousedown(function () {
+            var num = $('#shuliang').val();
+            if($('#shuliang').val() < {{ goods.gkucun }})
+            {
+              	$('#shuliang').val(function () {
+                return num * 1 + 1;
+            	});
+			}
+			var num1 = parseInt($('#shuliang').val());
+		    var num2 = parseFloat($('#danjia').html());
+			$('#zongjia').html(function () {
+			    return ((num1*100)*(num2*100)/10000).toFixed(2);
+			});
+        });
+
+		$('#jianhao').mousedown(function () {
+            var num = $('#shuliang').val();
+            if($('#shuliang').val() > 1)
+            {
+              	$('#shuliang').val(function () {
+                return num * 1 - 1;
+            	});
+			}
+			var num1 = parseInt($('#shuliang').val());
+		    var num2 = parseFloat($('#danjia').html());
+			$('#zongjia').html(function () {
+			    return ((num1*100)*(num2*100)/10000).toFixed(2);
+			});
+        });
+
+		$('#shuliang').change(function(){
+		    $('#shuliang').val(function () {
+				return parseInt($('#shuliang').val());
+            });
+		    jieguo();
+		    if($('#shuliang').val()<1){
+			    $('#shuliang').val(1);
+				jieguo();
+			}
+			else if($('#shuliang').val() > {{ goods.gkucun }}){
+			    $('#shuliang').val({{ goods.gkucun }});
+			    jieguo();
+			}
+		});
+
+		function jieguo() {
+		    var num1 = parseInt($('#shuliang').val());
+		    var num2 = parseFloat($('#danjia').html());
+			$('#zongjia').html(function () {
+			    return ((num1*100)*(num2*100)/10000).toFixed(2);
+			});
+        }
+
+		{% if user != None %}
+
+		$('#add_cart').mousedown(function () {
+			$.get("/cart/cartadd/{{ user.id }}/{{ goods.id }}/"+$('#shuliang').val(),function (data) {
+				$("#show_count").html(data.data)
+            })
+        });
+
+		{% endif %}
+
+		$("#buy_btn").click(function () {
+            $(this).attr("href",function () {
+				return "/order/orderinfo/{{ goods.id }}/"+$('#shuliang').val();
+            });
+        });
+
+
+	</script>
+{% endblock body_bottom %}

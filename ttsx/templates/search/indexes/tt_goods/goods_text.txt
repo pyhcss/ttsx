@@ -1,0 +1,3 @@
+{{ object.gname }}
+{{ object.gjianjie }}
+{{ object.gjieshao }}
