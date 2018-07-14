@@ -30,17 +30,17 @@
 		<div class="r_wrap fr clearfix">
 			<div class="sort_bar">
 				{% if paixu == "1" %}
-				<a href="/goods/list/{{ type.id|add:'-1' }}11" class="active">默认</a>
-				<a href="/goods/list/{{ type.id|add:'-1' }}21">价格</a>
-				<a href="/goods/list/{{ type.id|add:'-1' }}31">人气</a>
+				<a href="/goods/list/{{ type.id }}11" class="active">默认</a>
+				<a href="/goods/list/{{ type.id }}21">价格</a>
+				<a href="/goods/list/{{ type.id }}31">人气</a>
 				{% elif paixu == "2" %}
-				<a href="/goods/list/{{ type.id|add:'-1' }}11">默认</a>
-				<a href="/goods/list/{{ type.id|add:'-1' }}21" class="active">价格</a>
-				<a href="/goods/list/{{ type.id|add:'-1' }}31">人气</a>
+				<a href="/goods/list/{{ type.id }}11">默认</a>
+				<a href="/goods/list/{{ type.id }}21" class="active">价格</a>
+				<a href="/goods/list/{{ type.id }}31">人气</a>
 				{% elif paixu == "3" %}
-				<a href="/goods/list/{{ type.id|add:'-1' }}11">默认</a>
-				<a href="/goods/list/{{ type.id|add:'-1' }}21">价格</a>
-				<a href="/goods/list/{{ type.id|add:'-1' }}31" class="active">人气</a>
+				<a href="/goods/list/{{ type.id }}11">默认</a>
+				<a href="/goods/list/{{ type.id }}21">价格</a>
+				<a href="/goods/list/{{ type.id }}31" class="active">人气</a>
 				{% endif %}
 			</div>
 
@@ -66,19 +66,19 @@
 			</ul>
 			<div class="pagenation">
 				{% if goods.has_previous == True %}
-					<a href="/goods/list/{{ type.id|add:'-1' }}{{ paixu }}{{ goods.previous_page_number }}">上一页</a>
+					<a href="/goods/list/{{ type.id }}{{ paixu }}{{ goods.previous_page_number }}">上一页</a>
 				{% endif %}
 
 				{% for i in goods.paginator.page_range %}
 					{% if goods.number == i %}
 					<a class="active">{{ i }}</a>
 					{% else %}
-					<a href="/goods/list/{{ type.id|add:'-1' }}{{ paixu }}{{ i }}">{{ i }}</a>
+					<a href="/goods/list/{{ type.id }}{{ paixu }}{{ i }}">{{ i }}</a>
 					{% endif %}
 				{% endfor %}
 
 				{% if goods.has_next == True %}
-				<a href="/goods/list/{{ type.id|add:'-1' }}{{ paixu }}{{ goods.next_page_number }}">下一页></a>
+				<a href="/goods/list/{{ type.id }}{{ paixu }}{{ goods.next_page_number }}">下一页></a>
 				{% endif %}
 			</div>
 		</div>
