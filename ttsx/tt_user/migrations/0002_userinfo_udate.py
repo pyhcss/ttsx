@@ -13,7 +13,8 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='userinfo',
-            name='isDelete',
-            field=models.BooleanField(default=False),
+            name='udate',
+            field=models.DateTimeField(default='1970-1-1 00:00', auto_now_add=True),
+            preserve_default=False,
         ),
     ]

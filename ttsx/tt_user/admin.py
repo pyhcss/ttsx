@@ -4,7 +4,7 @@ import models
 
 class UserAdmin(admin.ModelAdmin):
     # 列表页显示的属性
-    list_display = ["id","uname","utel"]
+    list_display = ["id","uname","udate"]
     # 过滤条件
     list_filter = ["isDelete"]
     # 搜索框字段

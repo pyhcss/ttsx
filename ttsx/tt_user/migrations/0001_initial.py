@@ -21,6 +21,7 @@ class Migration(migrations.Migration):
                 ('uadder', models.CharField(default=b'', max_length=100)),
                 ('uyoubian', models.CharField(default=b'', max_length=6)),
                 ('utel', models.CharField(default=b'', max_length=11)),
+                ('isDelete', models.BooleanField(default=False)),
             ],
         ),
     ]

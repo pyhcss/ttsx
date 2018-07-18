@@ -23,6 +23,7 @@ class Migration(migrations.Migration):
                 ('gkucun', models.IntegerField()),
                 ('gjieshao', tinymce.models.HTMLField()),
                 ('isDelete', models.BooleanField(default=False)),
+                ('gliulan', models.IntegerField(default=0)),
             ],
         ),
         migrations.CreateModel(

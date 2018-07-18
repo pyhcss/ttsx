@@ -50,6 +50,7 @@ $(function(){
             $.get("/user/nameycl/"+$('#user_name').val(),function(data){
                 if(data.data != 0 && len>=5 && len<=20)
                 {
+                	$('.error_name').html("");
                     $('#user_name').next().html("用户名已被注册");
                     $('#user_name').next().css('color','#e62e2e');
                     $('#user_name').next().show();
@@ -147,4 +148,4 @@ $(function(){
 
 	});
 
-})
+});
