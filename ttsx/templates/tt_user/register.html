@@ -19,14 +19,14 @@
 				<a href="/user/login">登录</a>
 			</div>
 			<div class="reg_form clearfix">
-				<form action="/user/register_cl" method="post" id="reg_form">
+				<form action="/user/register" method="post" id="reg_form">
 					{% csrf_token %}
 				<ul>
 					<li>
 						<label>用户名:</label>
 						<input type="text" name="user_name" id="user_name">
 						<span class="error_tip">提示信息</span>
-					</li>					
+					</li>
 					<li>
 						<label>密码:</label>
 						<input type="password" name="pwd" id="pwd">

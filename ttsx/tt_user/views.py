@@ -9,12 +9,6 @@ from tt_order.models import *
 import redis,base64,user_decorator
 
 
-# 跳转到注册界面
-def register(request):
-    content = {"title":"天天生鲜－注册"}
-    return render(request,"tt_user/register.html",content)
-
-
 # 用户名预处理　是否注册过
 def nameycl(request,name):
     num = UserInfo.objects.filter(uname=name).count()
@@ -22,25 +16,33 @@ def nameycl(request,name):
 
 
 # 注册页提交用户数据
-def register_cl(request):
-    post = request.POST
-    uname = post["user_name"]
-    upwd = post["pwd"]
-    upwd2 = post["cpwd"]
-    uemail = post["email"]
+def register(request):
+    if request.method == "GET":
+        context = {"title": "天天生鲜－注册"}
+        return render(request, "tt_user/register.html", context)
+    else:
+        post = request.POST
+        uname = post["user_name"]
+        upwd = post["pwd"]
+        upwd2 = post["cpwd"]
+        uemail = post["email"]
+        count = UserInfo.objects.filter(uname=uname).count()
+        if count != 0 or upwd != upwd2 or uname == "" or upwd == "" or upwd2 == "" or uemail == "":
+            context = {"title": "天天生鲜－注册",}
+            return render(request,"tt_user/register.html",context)
+        else:
+            # 使用sha1加密
+            s = sha1()
+            s.update(upwd)
+            upwd3 = s.hexdigest()
 
-    # 使用sha1加密
-    s = sha1()
-    s.update(upwd)
-    upwd3 = s.hexdigest()
-
-    # 创建数据库模型对象并写入
-    user = UserInfo()
-    user.uname = uname
-    user.upwd = upwd3
-    user.uemail = uemail
-    user.save()
-    return redirect("/user/login")
+            # 创建数据库模型对象并写入
+            user = UserInfo()
+            user.uname = uname
+            user.upwd = upwd3
+            user.uemail = uemail
+            user.save()
+            return redirect("/user/login")
 
 
 # 跳转到登录界面

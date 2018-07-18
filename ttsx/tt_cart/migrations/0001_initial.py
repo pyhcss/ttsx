@@ -7,8 +7,8 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tt_goods', '0002_goods_gliulan'),
-        ('tt_user', '0002_userinfo_isdelete'),
+        ('tt_goods', '0001_initial'),
+        ('tt_user', '0001_initial'),
     ]
 
     operations = [
