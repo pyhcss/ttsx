@@ -1,11 +1,28 @@
 $(function () {
     var error_name = true;
     var error_pwd = true;
-    var error_username = true;
-    var error_userpwd = true;
+    var error_captcha = true;
+    var error = true;
+
+    $("#id_captcha_1").attr("placeholder","请输入验证码");
+
+    $('.captcha').click(function () {
+    $.getJSON("/captcha/refresh/", function (result) {
+        $('.captcha').attr('src', result['image_url']);
+        $('#id_captcha_0').val(result['key'])
+        });
+    });
 
     $('#username').blur(function () {
         username();
+    });
+
+    $('#pwd').blur(function () {
+        userpwd();
+    });
+
+    $("#id_captcha_1").blur(function () {
+        captcha();
     });
 
     function username(){
@@ -29,10 +46,6 @@ $(function () {
         }
     }
 
-    $('#pwd').blur(function () {
-        userpwd();
-    });
-
     function userpwd(){
         var len = $('#pwd').val().length;
         if(len == 0)
@@ -54,41 +67,44 @@ $(function () {
         }
     }
 
+    function captcha() {
+        len = $('#id_captcha_1').val().length;
+        if(len == 0)
+        {
+            error_captcha = true;
+            $(".yanzheng_error").html("请输入验证码");
+            $(".yanzheng_error").show();
+        }
+        else if(len != 4)
+        {
+            error_captcha = true;
+            $(".yanzheng_error").html("验证码错误");
+            $(".yanzheng_error").show();
+        }
+        else{
+            error_captcha = false;
+            $(".yanzheng_error").hide();
+        }
+    }
+
     function usernamepd() {
         $.ajaxSettings.async = false;
         $.get("/user/nameycl/"+$('#username').val(),function (data) {
             if(data.data == 1)
             {
-                error_username = false;
+                error = false;
                 $('#username').next().hide();
             }
             else
             {
-                error_username = true;
-                $('#username').next().html("用户名错误");
+                error = true;
+                $('#username').next().html("用户名或密码错误");
                 $('#username').next().show();
             }
         });
         $.ajaxSettings.async = true;
     }
 
-    function userpwdpd(){
-        $.ajaxSettings.async = false;
-        $.post("/user/pwd_cl",{"name":$('#username').val(),"pwd":$('#pwd').val()},function (data) {
-            if(data.data == 1)
-            {
-                error_userpwd = false;
-                $('#pwd').next().hide();
-            }
-            else
-            {
-                error_userpwd = true;
-                $('#pwd').next().html("密码错误");
-                $('#pwd').next().show();
-            }
-        });
-        $.ajaxSettings.async = true;
-    }
     function cookie() {
         if($("#jzyhm").is(':checked'))
         {
@@ -104,27 +120,25 @@ $(function () {
     $('#from_login').submit(function(){
         username();
         userpwd();
+        captcha();
         cookie();
 
-        if(error_name == false && error_pwd == false)
+        if(error_captcha == false && error_name == false && error_pwd == false)
         {
-           usernamepd();
+            usernamepd();
         }
-        if(error_username == true)
+        else
         {
             return false;
         }
-        if(error_name == false && error_pwd == false)
+
+        if(error == true)
         {
-            userpwdpd();
+           return false;
         }
-        if(error_userpwd == true)
+        else
         {
-            return false;
-        }
-        if(error_username == false && error_userpwd == false)
-        {
-            return true;
+           return true;
         }
 
     });

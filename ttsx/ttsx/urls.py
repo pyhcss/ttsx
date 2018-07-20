@@ -24,4 +24,5 @@ urlpatterns = [
     url(r"^goods/",include("tt_goods.urls")),
     url(r"^cart/",include("tt_cart.urls")),
     url(r"^order/",include("tt_order.urls")),
+    url(r'^captcha/', include('captcha.urls')),
 ]
