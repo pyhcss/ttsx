@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     "tinymce",
     "tt_cart",
     "tt_order",
+    "captcha",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -155,3 +156,8 @@ HAYSTACK_CONNECTIONS = {
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 # 分页输出
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
+
+# 验证码前景色
+CAPTCHA_FOREGROUND_COLOR = '#47aa34'
+# 验证码有效期
+CAPTCHA_TIMEOUT = 2

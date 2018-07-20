@@ -11,5 +11,4 @@ urlpatterns = [
     url("^centersite$",views.centerSite),
     url("^centerorder/?(\d*)$",views.centerOrder),
     url("^zhuxiao$",views.zhuxiao),
-
 ]

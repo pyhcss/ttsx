@@ -6,8 +6,7 @@ from hashlib import sha1
 from models import *
 from tt_goods.models import *
 from tt_order.models import *
-import redis,base64,user_decorator
-
+import redis,base64,user_decorator,forms
 
 # 用户名预处理　是否注册过
 def nameycl(request,name):
@@ -17,32 +16,48 @@ def nameycl(request,name):
 
 # 注册页提交用户数据
 def register(request):
+    context = {}
+    context["title"] = "天天生鲜－注册"
     if request.method == "GET":
-        context = {"title": "天天生鲜－注册"}
+        context["post"] = None
+        context["captcha"] = forms.Check_Code()
         return render(request, "tt_user/register.html", context)
     else:
-        post = request.POST
-        uname = post["user_name"]
-        upwd = post["pwd"]
-        upwd2 = post["cpwd"]
-        uemail = post["email"]
-        count = UserInfo.objects.filter(uname=uname).count()
-        if count != 0 or upwd != upwd2 or uname == "" or upwd == "" or upwd2 == "" or uemail == "":
-            context = {"title": "天天生鲜－注册",}
-            return render(request,"tt_user/register.html",context)
-        else:
-            # 使用sha1加密
-            s = sha1()
-            s.update(upwd)
-            upwd3 = s.hexdigest()
+        try:
+            form = forms.Check_Code(request.POST)
+            fbool = form.is_valid()
+        except Exception as e:
+            print(e)
+            fbool = False
+        if fbool == True:
+            post = request.POST
+            uname = post["user_name"]
+            upwd = post["pwd"]
+            upwd2 = post["cpwd"]
+            uemail = post["email"]
+            count = UserInfo.objects.filter(uname=uname).count()
+            if count != 0 or len(uname) < 5 or len(uname) > 20 or len(upwd) < 8 \
+                    or len(upwd) >20 or upwd != upwd2 or uname == "" or upwd == "" \
+                    or upwd2 == "" or uemail == "":
+                return render(request,"tt_user/register.html",context)
+            else:
+                # 使用sha1加密
+                s = sha1()
+                s.update(upwd)
+                upwd3 = s.hexdigest()
 
-            # 创建数据库模型对象并写入
-            user = UserInfo()
-            user.uname = uname
-            user.upwd = upwd3
-            user.uemail = uemail
-            user.save()
-            return redirect("/user/login")
+                # 创建数据库模型对象并写入
+                user = UserInfo()
+                user.uname = uname
+                user.upwd = upwd3
+                user.uemail = uemail
+                user.save()
+                return redirect("/user/login")
+        else:
+            context["post"] = request.POST
+            context["captcha"] = forms.Check_Code()
+            context["errorcode"] = 1
+            return render(request, "tt_user/register.html", context)
 
 
 # 跳转到登录界面
