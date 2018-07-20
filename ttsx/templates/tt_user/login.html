@@ -28,7 +28,7 @@
 						<div class="user_error">输入错误</div>
 						<input type="password" name="pwd" id="pwd" class="pass_input" placeholder="请输入密码" value="">
 						<div class="pwd_error">输入错误</div>
-						<input type="text" name="yanzheng" id="yanzheng" class="yanzheng_input" placeholder="请输入验证码" value="">
+						{{ captcha.captcha }}
 						<div class="yanzheng_error">请输入验证码</div>
 						<div class="more_input clearfix">
 							<input type="checkbox" name="jzyhm" id="jzyhm" checked="checked">
@@ -42,3 +42,17 @@
 		</div>
 	</div>
 {% endblock body %}
+{% block body_bottom %}
+	<script>
+		$(function () {
+			{% if error_code == True %}
+			$(".yanzheng_error").html("验证码错误");
+			$(".yanzheng_error").show();
+			{% endif %}
+			{% if error_user == True %}
+			$(".user_error").html("用户名或密码错误");
+			$(".user_error").show();
+			{% endif %}
+        })
+	</script>
+{% endblock body_bottom %}
