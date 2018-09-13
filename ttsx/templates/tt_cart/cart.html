@@ -159,6 +159,14 @@
 				}
             });
 			$("#zong").html(zong.toFixed(2));
+
+			if($("input[type='checkbox']:checked").not($("#check_all")).length <= 0)
+			{
+        		$("#jiesuan").css("background-color",'#fff4e8');
+			}
+			else{
+			    $("#jiesuan").css("background-color",'#ff3d3d');
+			}
 		}
 
 

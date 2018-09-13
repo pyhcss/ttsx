@@ -123,6 +123,13 @@
 		$("#fu").html(function () {
 			return (parseFloat($("#zong").html())+10).toFixed(2) +"元";
         });
+		{% if user.uadder == "" or user.ushou == "" or user.utel == "" %}
+
+		$('#order_btn').html("请补全收货信息");
+		$(".order_submit a").css("background-color","#ddd");
+
+		{% else %}
+
 		{% if active == 1 %}
 		$("#order_btn").click(function () {
 			$.post("/order/ordercl",cartid(),function (data) {
@@ -174,6 +181,7 @@
             })
         });
 
+		{% endif %}
 		{% endif %}
 
 
