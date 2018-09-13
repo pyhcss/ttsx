@@ -51,7 +51,7 @@ def ordercl(request,id):
         order = OrderInfo()
         order.oid = oid
         order.ouser = user
-        order.oaddress = "%s （ %s 收） %s" %(user.uadder,user.ushou,user.utel)
+        order.oaddress = (u"%s ( %s 收) %s" %(user.uadder,user.ushou,user.utel)).encode('utf-8')
         order.ozrmb = 10
         order.save()
         if id == "": # 代表从购物车转过来的订单
