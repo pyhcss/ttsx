@@ -36,6 +36,9 @@ html,body{height:100%}
 	margin:0 10px;
 }
 
+.tishi{height:40px;background-color:#ddd}
+.tishi div{display:block;width:1200px;margin:0 auto;height:40px;text-align: center}
+.tishi span{line-height:40px;font-size:18px;font-family:Microsoft Yahei;color:#37ab40;}
 
 /* logo、搜索框、购物车样式 */
 
