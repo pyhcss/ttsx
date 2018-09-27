@@ -1,4 +1,4 @@
-#coding=utf-8
+# coding=utf-8
 """
 Django settings for ttsx project.
 
@@ -14,6 +14,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
+# 项目根路径
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -21,16 +22,19 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# 安全cookie盐值 不过好像没启用
 SECRET_KEY = 'j=bhwx@axf1yp4j$0#=ux7o2(x$yo)+v#r_8*^43ljj=2k4%l&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+
+# 调试模式/非调试模式
 DEBUG = False
 
+# 允许访问的ip
 ALLOWED_HOSTS = ["*"]
 
-
 # Application definition
-
+# 注册应用
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -46,11 +50,11 @@ INSTALLED_APPS = (
     "tt_order",
     "captcha",
 )
-
+# 中间件类
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -58,12 +62,16 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
+# 根级url处理文件
 ROOT_URLCONF = 'ttsx.urls'
 
+# 模板配置
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        # 模板目录
         'DIRS': [os.path.join(BASE_DIR,"templates")],
+        # 是否应该在每个已安装的应用中查找模板
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,12 +84,14 @@ TEMPLATES = [
     },
 ]
 
+# wsgi配置
 WSGI_APPLICATION = 'ttsx.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
+# mysql数据库配置
 DATABASES = {
     'default': {
         # 'ENGINE': 'django.db.backends.sqlite3',
@@ -96,12 +106,24 @@ DATABASES = {
     }
 }
 
+# redis缓存配置
+CACHES = {
+    "default":{
+        # 设定缓存到本地redis
+        "BACKEND":"redis_cache.cache.RedisCache",
+        # 缓存主机
+        "LOCATION":"localhost:6379",
+        # 缓存有效期
+        "TIMEOUT":3600,
+    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
+# 语言配置
 LANGUAGE_CODE = 'zh-Hans'#'en-us'
-
+# 地区时间配置
 TIME_ZONE = "Asia/Shanghai"#'UTC'
 
 USE_I18N = True
@@ -145,16 +167,16 @@ TINYMCE_DEFAULT_CONFIG = {
 # 添加搜索引擎
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.whoosh_cn_backend.WhooshEngine',
         # 指定使用的搜索引擎
-        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+        'ENGINE': 'haystack.backends.whoosh_cn_backend.WhooshEngine',
         # 指定索引文件存放位置
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
     }
 }
 
 #新增的数据自动生成索引
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
-# 分页输出
+# 分页输出值
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
 
 # 验证码前景色

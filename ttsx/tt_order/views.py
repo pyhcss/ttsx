@@ -58,29 +58,30 @@ def ordercl(request,id):
             # 遍历提交的购物车id　生成数据库中订单的详细商品信息
             data = request.POST
             for i in data:
-                goods = OrderGoods()
-                order = OrderInfo.objects.get(oid=oid)
-                cart = CartInfo.objects.get(id=data[i])
-                # 如果订单数量大于库存数量　则返回未提交成功
-                if cart.cgoods.gkucun < cart.count:
-                    # 回滚事务
-                    transaction.savepoint_rollback(tran_id)
-                    return JsonResponse({"data":0})
-                else:
-                    goods.ogoods = cart.cgoods
-                    goods.orderinfo = order
-                    goods.ogrmb = cart.cgoods.grmb
-                    goods.ocount = cart.count
-                    # 更新订单总金额
-                    order.ozrmb += cart.cgoods.grmb * cart.count
-                    # 从商品库存中减去订单中商品数量
-                    goodsinfo = Goods.objects.get(id=cart.cgoods.id)
-                    goodsinfo.gkucun -= cart.count
-                    goodsinfo.save()
-                    # 删除购物车中的信息
-                    cart.delete()
-                    order.save()
-                    goods.save()
+                if i.startswith("cart"):
+                    goods = OrderGoods()
+                    order = OrderInfo.objects.get(oid=oid)
+                    cart = CartInfo.objects.get(id=data[i])
+                    # 如果订单数量大于库存数量　则返回未提交成功
+                    if cart.cgoods.gkucun < cart.count:
+                        # 回滚事务
+                        transaction.savepoint_rollback(tran_id)
+                        return JsonResponse({"data":0})
+                    else:
+                        goods.ogoods = cart.cgoods
+                        goods.orderinfo = order
+                        goods.ogrmb = cart.cgoods.grmb
+                        goods.ocount = cart.count
+                        # 更新订单总金额
+                        order.ozrmb += cart.cgoods.grmb * cart.count
+                        # 从商品库存中减去订单中商品数量
+                        goodsinfo = Goods.objects.get(id=cart.cgoods.id)
+                        goodsinfo.gkucun -= cart.count
+                        goodsinfo.save()
+                        # 删除购物车中的信息
+                        cart.delete()
+                        order.save()
+                        goods.save()
         elif id == "0": # 代表从商品详情页转来的订单
             goodsid = request.POST["id"]
             count = int(request.POST["count"])

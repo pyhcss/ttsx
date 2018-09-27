@@ -10,7 +10,7 @@
 				{% if user.uname != None %}
 				<div class="login_info fl" style="display: block">
 					欢迎您：<em>{{ user.uname|safe }}</em>
-					<a href="/user/zhuxiao" class="zhuxiao">注销</a>
+					<a href="/user/logout" class="zhuxiao">注销</a>
 				</div>
 				<div class="login_btn fl" style="display:none">
 					<a href="/user/login">登录</a>
@@ -20,7 +20,7 @@
 				{% else %}
 				<div class="login_info fl">
 					欢迎您：<em>""</em>
-					<a href="/user/zhuxiao" class="zhuxiao">注销</a>
+					<a href="/user/logout" class="zhuxiao">注销</a>
 				</div>
 				<div class="login_btn fl">
 					<a href="/user/login">登录</a>

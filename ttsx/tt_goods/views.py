@@ -1,6 +1,5 @@
-#coding=utf-8
+# coding=utf-8
 from django.shortcuts import render
-from django.http import HttpResponse
 from tt_user.models import *
 from tt_cart.models import *
 from models import *
