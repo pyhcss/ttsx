@@ -41,7 +41,7 @@
 			</div>
 		</li>
 		<li class="col07">25.6元</li>
-		<li class="col08"><a href="/cart/revcart/{{ i.cuser.id }}/{{ i.cgoods.id }}/0">删除</a></li>
+		<li class="col08"><a href="/cart/updatecart/update/1/{{ i.cgoods.id }}/0">删除</a></li>
 
 	</ul>
 	{% endfor %}
@@ -67,7 +67,7 @@
 		$(".add").click(function () {
 		    var num = parseInt($(this).next().val());
 		    if(num < parseInt($(this).nextAll().filter(".kucun").html())){
-		        $.get("/cart/cartadd/{{ user.id }}/"+parseInt($(this).nextAll().filter(".goodsid").html())+"/1");
+		        $.get("/cart/updatecart/add/1/"+parseInt($(this).nextAll().filter(".goodsid").html())+"/1");
 		        $(this).next().val(function () {
 				return num * 1 + 1;
             	});
@@ -84,7 +84,7 @@
         $(".minus").click(function () {
         	var num = parseInt($(this).prev().val());
         	if(num > 1){
-            	$.get("/cart/cartadd/{{ user.id }}/"+parseInt($(this).nextAll().filter(".goodsid").html())+"/-1");
+            	$.get("/cart/updatecart/add/1/"+parseInt($(this).nextAll().filter(".goodsid").html())+"/-1");
             	$(this).prev().val(function () {
             	return num * 1 - 1;
             	});
@@ -116,7 +116,7 @@
             	return num;
             	});
 			}
-            $.get("/cart/revcart/{{ user.id }}/"+parseInt($(this).nextAll().filter(".goodsid").html())+"/"+parseInt($(this).val()));
+            $.get("/cart/updatecart/update/1/"+parseInt($(this).nextAll().filter(".goodsid").html())+"/"+parseInt($(this).val()));
 			xiaoji();
             zongji();
 		});
@@ -181,7 +181,6 @@
         });
 
 		function cart() {
-		    // var cartt = {};
 			var url="/order/orderinfo?";
 			$("input[type='checkbox']:checked").not($("#check_all")).each(function (i) {
 				url += "cart" + i + "=" + $(this).parents(".cart_list_td").attr("id") +"&";

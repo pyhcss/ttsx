@@ -130,7 +130,7 @@ def getinfo(request,type):
     user = request.session.get('user', default=None)
     user_id = request.session.get('id', default=None)
     if type == "user":                                      # 获取用户信息
-        return {"uname":user,"id":user_id}
+        return {"uname":user}
     elif type == "cart":                                    # 获取购物车数量信息
         return CartInfo.objects.filter(cuser=user_id).count() if user_id else 0
 

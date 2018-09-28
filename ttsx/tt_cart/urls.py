@@ -1,8 +1,8 @@
-from django.conf.urls import url
+# coding=utf-8
 import views
+from django.conf.urls import url
 
 urlpatterns = [
-    url(r"^cartinfo$",views.cartInfo),
-    url(r"^cartadd/(\d+)/(\d+)/(-?\d+)$",views.cartadd),
-    url(r"^revcart/(\d+)/(\d+)/(\d+)$",views.revcart),
+    url(r"^cartinfo$",views.cartInfo),                              # 购物车信息页面
+    url(r"^updatecart/(\w+)/(\d)/(\d+)/(-?\d+)$",views.updateCart), # 增加或修改购物车信息
 ]

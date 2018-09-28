@@ -32,11 +32,7 @@
 			<div class="total">总价：<em id="zongjia">{{ goods.grmb }}</em>元</div>
 			<div class="operate_btn">
 				<a href="javascript:;" class="buy_btn" id="buy_btn">立即购买</a>
-				{% if user %}
-				<a href="/cart/cartadd/0/{{ goods.id }}/0" class="add_cart" id="add_cart">加入购物车</a>
-				{% else %}
-				<a href="javascript:;" class="add_cart" id="add_cart" >加入购物车</a>
-				{% endif %}
+				<a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>
 			</div>
 		</div>
 	</div>
@@ -159,19 +155,17 @@
 			});
         }
 
-
-
 		$('#add_cart').mousedown(function () {
 		    {% if user.uname %}
-			$.get("/cart/cartadd/{{ user.id }}/{{ goods.id }}/"+$('#shuliang').val(),function (data) {
-				$("#show_count").html(data.data)
+			$.get("/cart/updatecart/add/1/{{ goods.id }}/"+$('#shuliang').val(),function (data) {
+			    if (data.data != 0) {
+                    $("#show_count").html(data.data)
+                }
             });
 			{% else %}
-			location.href = "/user/login";
+			location.href = "/cart/updatecart/add/0/{{ goods.id }}/"+$('#shuliang').val();
 			{% endif %}
         });
-
-
 
 		$("#buy_btn").click(function () {
             $(this).attr("href",function () {

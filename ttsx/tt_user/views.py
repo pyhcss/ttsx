@@ -100,7 +100,7 @@ def login(request):
             elif pwd2 == pwd3 and name == user.uname:
                 request.session['user'] = name  # 保存登录信息到session
                 request.session["id"] = user.id
-                request.session.set_expiry(1200)# 1200秒内没有活动删除session
+                request.session.set_expiry(60*60)# session有效期
                 rspred = HttpResponseRedirect(url)
                                                 # 如果用户有储存url 则删除url的cookie信息
                 if cookie.has_key("url"):
@@ -164,11 +164,12 @@ def centerOrder(request,page):
     """跳转到用户中心　全部订单"""
     content = {}                                # 初始化数据字典
     user_id = request.session.get("id", default=None)
-    user = UserInfo.objects.get(id=user_id)
-    content['user'] = user; content["title"] = "天天生鲜－用户中心"
+    user = request.session.get("user", default=None)
+    content['user'] = {"uname":user}
+    content["title"] = "天天生鲜－用户中心"
     content['active'] = 2; content["order"] = None
     try:                                        # 拿到用户的订单　分页返回
-        order = OrderInfo.objects.filter(ouser=user).order_by("-oid")
+        order = OrderInfo.objects.filter(ouser=user_id).order_by("-oid")
         paginator = Paginator(order,2)          # 获取分页对象
         page_id = page if page else 1           # 没参数默认第一页
         page = paginator.page(int(page_id))     # 按参数获取页面
