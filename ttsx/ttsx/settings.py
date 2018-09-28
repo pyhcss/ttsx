@@ -28,7 +28,7 @@ SECRET_KEY = 'j=bhwx@axf1yp4j$0#=ux7o2(x$yo)+v#r_8*^43ljj=2k4%l&'
 # SECURITY WARNING: don't run with debug turned on in production!
 
 # 调试模式/非调试模式
-DEBUG = False
+DEBUG = True
 
 # 允许访问的ip
 ALLOWED_HOSTS = ["*"]
@@ -99,7 +99,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         "NAME":"ttsx",
         "USER":"root",
-        "PASSWORD":"******",
+        "PASSWORD":"yunlong",
         "HOST":"localhost",
         "PORT":"3306",
 

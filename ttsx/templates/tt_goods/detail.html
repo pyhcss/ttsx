@@ -32,7 +32,7 @@
 			<div class="total">总价：<em id="zongjia">{{ goods.grmb }}</em>元</div>
 			<div class="operate_btn">
 				<a href="javascript:;" class="buy_btn" id="buy_btn">立即购买</a>
-				{% if user == None %}
+				{% if user %}
 				<a href="/cart/cartadd/0/{{ goods.id }}/0" class="add_cart" id="add_cart">加入购物车</a>
 				{% else %}
 				<a href="javascript:;" class="add_cart" id="add_cart" >加入购物车</a>
@@ -77,10 +77,11 @@
 {% endblock body3 %}
 
 {% block body_bottom %}
-	{% if user != None %}
+    <script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js'%}"></script>
+
+	{% if user.uname %}
 	<div class="add_jump"></div>
 
-	<script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js'%}"></script>
 	<script type="text/javascript">
 		var $add_x = $('#add_cart').offset().top;
 		var $add_y = $('#add_cart').offset().left;
@@ -158,22 +159,25 @@
 			});
         }
 
-		{% if user != None %}
+
 
 		$('#add_cart').mousedown(function () {
+		    {% if user.uname %}
 			$.get("/cart/cartadd/{{ user.id }}/{{ goods.id }}/"+$('#shuliang').val(),function (data) {
 				$("#show_count").html(data.data)
-            })
+            });
+			{% else %}
+			location.href = "/user/login";
+			{% endif %}
         });
 
-		{% endif %}
+
 
 		$("#buy_btn").click(function () {
             $(this).attr("href",function () {
 				return "/order/orderinfo/{{ goods.id }}/"+$('#shuliang').val();
             });
         });
-
 
 	</script>
 {% endblock body_bottom %}

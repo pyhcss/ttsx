@@ -1,6 +1,6 @@
 # coding=utf-8
-from haystack import indexes
 from models import Goods
+from haystack import indexes
 
 
 class GoodsIndex(indexes.SearchIndex, indexes.Indexable):

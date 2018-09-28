@@ -18,12 +18,12 @@ from django.contrib import admin
 from django.conf.urls import include, url
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),  # 后台模块
-    url(r"^user/",include("tt_user.urls")),     # 用户模块
-    url(r"^tinymce/",include("tinymce.urls")),  # 富文本编辑器
-    url(r"^",include("tt_goods.urls")),         # 主页
-    url(r"^goods/",include("tt_goods.urls")),   # 商品模块
-    url(r"^cart/",include("tt_cart.urls")),     # 购物车模块
-    url(r"^order/",include("tt_order.urls")),   # 订单模块
-    url(r'^captcha/', include('captcha.urls')), # 验证码模块
+    url(r'^admin/', include(admin.site.urls)),          # 后台模块
+    url(r"^user/",include("tt_user.urls")),             # 用户模块
+    url(r"^tinymce/",include("tinymce.urls")),          # 富文本编辑器
+    url(r"^",include("tt_goods.urls")),                 # 主页
+    url(r"^goods/",include("tt_goods.urls")),           # 商品模块
+    url(r"^cart/",include("tt_cart.urls")),             # 购物车模块
+    url(r"^order/",include("tt_order.urls")),           # 订单模块
+    url(r'^captcha/', include('captcha.urls')),         # 验证码模块
 ]

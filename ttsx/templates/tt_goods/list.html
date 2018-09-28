@@ -88,9 +88,13 @@
 {% block body_bottom %}
 <script>
 	$(".add_goods").click(function () {
+		{% if user.uname %}
 		$.get("/cart/cartadd/{{ user.id|default:0 }}/"+$(this).next().html()+"/1",function (data) {
 			$("#show_count").html(data.data)
         });
+		{% else %}
+		location.href = "/user/login";
+		{% endif %}
     });
 </script>
 {% endblock body_bottom %}
