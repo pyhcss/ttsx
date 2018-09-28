@@ -29,7 +29,7 @@
 
 		<div class="r_wrap fr clearfix">
 			<div class="sort_bar">
-				<a href="/goods/list/{{ type.id|add:'-1' }}11" class="active">默认</a>
+				<a href="javascript:;" class="active">默认</a>
 			</div>
 
 			<ul class="goods_type_list clearfix">
@@ -41,11 +41,7 @@
 					<div class="operate">
 						<span class="prize">￥{{ i.object.grmb }}</span>
 						<span class="unit">{{ i.object.grmb }}/{{ i.object.gdanwei }}</span>
-                       	{% if user == None %}
-						<a href="/cart/cartadd/0/{{ i.object.id }}/0" class="add_goods" title="加入购物车"></a>
-						{% else %}
 						<a href="javascript:;" class="add_goods" title="加入购物车"></a>
-						{% endif %}
 						<span id="spanid" style="display: none">{{ i.object.id }}</span>
 
 
@@ -78,9 +74,15 @@
 {% block body_bottom %}
 <script>
 	$(".add_goods").click(function () {
-		$.get("/cart/cartadd/{{ user.id|default:0 }}/"+$(this).next().html()+"/1",function (data) {
-			$("#show_count").html(data.data)
+		{% if user.uname %}
+		$.get("/cart/updatecart/add/1/"+$(this).next().html()+"/1",function (data) {
+		    if (data.data != 0){
+		        $("#show_count").html(data.data)
+			}
         });
+		{% else %}
+		location.href = "/cart/updatecart/add/0/"+$(this).next().html()+"/1";
+		{% endif %}
     });
 </script>
 {% endblock body_bottom %}

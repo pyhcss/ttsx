@@ -167,7 +167,7 @@
         }
 		{% elif active == 2 %}
 		$("#order_btn").click(function () {
-			$.post("/order/ordercl/0",{"id":{{ goods.id }},"count":{{ count }},"csrfmiddlewaretoken":getCookie("csrftoken")},function (data) {
+			$.post("/order/ordercl/1",{"id":{{ goods.id }},"count":{{ count }},"csrfmiddlewaretoken":getCookie("csrftoken")},function (data) {
                 if (data.data == 1) {
                     localStorage.setItem('order_finish', 2);
 
