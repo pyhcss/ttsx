@@ -1,8 +1,9 @@
-#coding=utf-8
+# coding=utf-8
 from django.db import models
 
-# 定义用户数据库
+
 class UserInfo(models.Model):
+    """定义用户数据库"""
     uname = models.CharField(max_length=20)
     upwd = models.CharField(max_length=40)
     uemail = models.CharField(max_length=30)

@@ -1,13 +1,12 @@
-#coding=utf-8
-from django.shortcuts import redirect
+# coding=utf-8
 from django.http import HttpResponseRedirect
 
 
-# 登录验证装饰器
 def login(func):
+    """登录验证装饰器"""
     def login_func(request,*args,**kwargs):
         user = request.session.get("user", default=None)
-        if user == None:
+        if not user:
             rspred = HttpResponseRedirect("/user/login")
             rspred.set_cookie("url",request.get_full_path())
             return rspred

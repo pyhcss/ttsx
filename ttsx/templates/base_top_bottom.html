@@ -7,10 +7,10 @@
 			<div class="login_btn fl"><a href="http://ihome.newzn.cn" style="margin-left:30px" target="_blank">爱家项目</a></div>
 			<div class="login_btn fl"><a href="https://github.com/pyhcss/ttsx" style="margin-left:30px" target="_blank">源码直通车</a></div>
 			<div class="fr">
-				{% if user.uname != None %}
+				{% if user.uname %}
 				<div class="login_info fl" style="display: block">
 					欢迎您：<em>{{ user.uname|safe }}</em>
-					<a href="/user/zhuxiao" class="zhuxiao">注销</a>
+					<a href="/user/logout" class="zhuxiao">注销</a>
 				</div>
 				<div class="login_btn fl" style="display:none">
 					<a href="/user/login">登录</a>
@@ -20,7 +20,7 @@
 				{% else %}
 				<div class="login_info fl">
 					欢迎您：<em>""</em>
-					<a href="/user/zhuxiao" class="zhuxiao">注销</a>
+					<a href="/user/logout" class="zhuxiao">注销</a>
 				</div>
 				<div class="login_btn fl">
 					<a href="/user/login">登录</a>

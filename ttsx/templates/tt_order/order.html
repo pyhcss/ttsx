@@ -106,6 +106,11 @@
 	<script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
 	<script>
 
+		function getCookie(name) {
+    		var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+    		return r ? r[1] : undefined;
+		}
+
 		$(".col07").html(function () {
 			var num1 = parseFloat($(this).prevAll(".col05").html());
 			var num2 = parseInt($(this).prevAll(".col06").html());
@@ -157,11 +162,12 @@
 			$(".goods_list_td").each(function (i) {
 			    id["cart"+i] = $(this).attr("id");
             });
+			id["csrfmiddlewaretoken"] = getCookie("csrftoken");
 			return id;
         }
 		{% elif active == 2 %}
 		$("#order_btn").click(function () {
-			$.post("/order/ordercl/0",{"id":{{ goods.id }},"count":{{ count }}},function (data) {
+			$.post("/order/ordercl/1",{"id":{{ goods.id }},"count":{{ count }},"csrfmiddlewaretoken":getCookie("csrftoken")},function (data) {
                 if (data.data == 1) {
                     localStorage.setItem('order_finish', 2);
 

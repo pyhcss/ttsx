@@ -68,10 +68,10 @@
 			$(".yanzheng span").html("验证码错误");
 			$(".yanzheng span").show();
 			{% endif %}
-			{% if post != None %}
-			$("#user_name").val("{{ post.user_name }}");
-			$("#email").val("{{ post.email }}");
-			$("#pwd").val("{{ post.pwd }}");
+			{% if user != None %}
+			$("#user_name").val("{{ user.user_name }}");
+			$("#email").val("{{ user.email }}");
+			$("#pwd").val("{{ user.pwd }}");
 			{% endif %}
         })
 	</script>

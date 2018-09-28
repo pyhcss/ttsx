@@ -1,6 +1,6 @@
-#coding=utf-8
-from django.contrib import admin
+# coding=utf-8
 import models
+from django.contrib import admin
 
 
 class OrderInfoAdmin(admin.ModelAdmin):
