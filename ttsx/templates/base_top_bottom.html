@@ -1,11 +1,19 @@
 {% extends "base_bottom.html" %}
+{% load static from staticfiles %}
 
 {% block body %}
 <div class="header_con">
 		<div class="header">
 			<div class="welcome fl">欢迎来到天天生鲜!</div>
 			<div class="login_btn fl"><a href="http://ihome.newzn.cn" style="margin-left:30px" target="_blank">爱家项目</a></div>
-			<div class="login_btn fl"><a href="https://github.com/pyhcss/ttsx" style="margin-left:30px" target="_blank">源码直通车</a></div>
+			<div class="login_btn fl"><a href="https://github.com/pyhcss/ttsx" style="margin-left:30px;margin-right: 30px" target="_blank">源码直通车</a></div>
+			<div class="python fl" >
+				<p>python交流群</p>
+				<div class="python_show">
+					<img src="{% static 'images/python.jpg' %}">
+					<p style="display: none">二维码若失效加网页最下方微信号备注python交流群即可</p>
+				</div>
+			</div>
 			<div class="fr">
 				{% if user.uname %}
 				<div class="login_info fl" style="display: block">

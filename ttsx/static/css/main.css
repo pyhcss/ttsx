@@ -13,7 +13,7 @@ html,body{height:100%}
 	margin:0 auto;
 }
 
-.welcome,.login_info,.login_btn,.user_link{
+.welcome,.login_info,.login_btn,.user_link,.python{
 	line-height:29px;
 }
 
@@ -23,12 +23,49 @@ html,body{height:100%}
 
 .login_info em{color:#ff8800}
 
-.login_btn a,.user_link a{
+.login_btn a,.user_link a,.python p{
 	color:#666;
 }
 
-.login_btn a:hover,.user_link a:hover{
+.login_btn a:hover,.user_link a:hover,.python p:hover{
 	color:#ff8800;
+}
+
+.python:hover .python_show{
+	display: block;
+}
+
+.python {
+	position:relative
+}
+
+.python_show {
+	display:none;
+	position:absolute;
+	padding: 9px;
+    top: 29px;
+    right: -35px;
+	z-index:99999;
+	background-color:#fff;
+	border-radius:4px;
+	box-shadow:0 4px 8px 0 rgba(0,0,0,.1)
+}
+
+.python_show:before {
+	display:block;
+	content:'';
+	position:absolute;
+	top:-14px;
+	left:65px;
+	border-style:solid;
+	border-width:7px;
+	border-color:transparent transparent #fff;
+	width:0;
+	height:0
+}
+
+.python_show img{
+	width: 120px;
 }
 
 .login_btn span,.user_link span{
