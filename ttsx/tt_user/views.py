@@ -1,10 +1,12 @@
 # coding=utf-8
 
-import hashlib,user_decorator,forms
+import hashlib,user_decorator,forms,random
 
 from models import *
 from tt_goods.models import *
 from tt_order.models import *
+from libs.send_email import sendemail
+from django.core.cache import cache
 from django.core.paginator import Paginator
 from django.shortcuts import render,redirect
 from django.http import JsonResponse,HttpResponse,HttpResponseRedirect
@@ -184,3 +186,59 @@ def logOut(request):
     """注销登录"""
     request.session.clear()
     return redirect("/")
+
+
+def update_pwd(request):
+    """忘记密码"""
+    if request.method == "GET":                 # get请求返回模板
+        content = {}; content["title"] = "天天生鲜－忘记密码"
+        content["captcha"] = forms.Check_Code() # 传递图片验证码
+        content["active"] = 4
+        return render(request,"tt_user/user_update_pwd.html",content)
+    try:                                        # post请求
+        user_name = request.POST['name']        # 获取传递的参数
+        captcha = request.POST['captcha']
+        pwd = request.POST['pwd']
+    except Exception as e:
+        return JsonResponse({"errcode":1,"errmsg":"参数错误"})
+    if len(pwd) < 8 or len(pwd) > 20:
+        return JsonResponse({"errcode":1,"errmsg":"密码不能小于8位或大于20位"})
+    try:                                        # 获取缓存中的验证码
+        email_code = cache.get(user_name+"_email_code")
+    except Exception as e:
+        return JsonResponse({"errcode":2,"errmsg":"邮箱验证码已过期,请重新获取"})
+    if email_code != captcha:
+        return JsonResponse({"errcode": 2, "errmsg": "邮箱验证码错误,请重新获取"})
+    user = UserInfo.objects.get(uname=user_name)# 获取用户信息
+    user.upwd = hashlib.sha1(pwd).hexdigest()   # 修改用户信息
+    user.save()
+    return JsonResponse({"errcode":0, "errmsg": "密码修改成功,请直接使用新密码登录"})
+
+
+def email_code(request):
+    """发送邮箱验证码"""
+    try:
+        user_name = request.GET['username']     # 获取用户名
+    except Exception as e:
+        return JsonResponse({"errcode":1,"errmsg":"参数错误"})
+    try:
+        form = forms.Check_Code(request.GET)    # 判断验证码的对错
+        fbool = form.is_valid()
+    except Exception as e:
+        return JsonResponse({"errcode":2,"errmsg":"验证码错误"})
+    if not fbool:
+        return JsonResponse({"errcode": 2, "errmsg": "验证码错误"})
+    else:
+        try:                                    # 从数据库获取用户
+            user = UserInfo.objects.get(uname=user_name)
+        except Exception as e:
+            return JsonResponse({"errcode": 3, "errmsg": "该用户名未注册"})
+        email = user.uemail                     # 查询用户邮箱
+        code = str(random.randint(0,999999)).zfill(6)# 生成验证码
+        cache.set(user_name+"_email_code",code,60*5)# 利用缓存储存验证码
+        resp = sendemail(email,code)            # 发送邮件
+        if resp == '发送成功':                   # 成功返回
+            show_email = email[:3] + "***" + email[-8:]
+            return JsonResponse({"errcode":0,"errmsg":show_email.decode('gbk').encode('utf-8')+'邮件发送成功'})
+        else:                                   # 失败返回
+            return JsonResponse({"errcode":4,"errmsg":"邮箱验证码发送失败,请稍后重试或联系管理员"})

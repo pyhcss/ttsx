@@ -1,0 +1,62 @@
+{% extends "base_top_bottom_left.html" %}
+{% load static from staticfiles %}
+
+{% block head %}
+<script type="text/javascript" src="{% static 'js/update_pwd.js'%}"></script>
+{% endblock head %}
+
+{% block body3 %}
+    <div class="right_content clearfix">
+        <div class="info_con clearfix">
+            <div class="n_sub_con">
+                <div class="n_r_con">
+                    <!--<div class="n_reg_title clearfix">-->
+                        <!--<h1>修改密码</h1>-->
+                        <!--<a href="/user/login">登录</a>-->
+                    <!--</div>-->
+                    <div class="n_reg_form clearfix">
+                        <form id="reg_form">
+                            {% csrf_token %}
+                        <ul>
+                            <li>
+                                <label>用户名:</label>
+                                <input type="text" name="user_name" id="user_name">
+                                <span class="n_error_tip">提示信息</span>
+                            </li>
+                            <li class="n_yanzheng">
+                                <label>验证码:</label>
+                                {{ captcha.captcha }}
+                                <span class="n_error_tip" style="height:0;line-height:10px">提示信息</span>
+                                <a class="n_but_con" href="javascript:;" onclick="sendEmailCode();">
+                                    <span class="n_but1">获取邮箱</span>
+                                    <span class="n_but2">验证码</span>
+                                </a>
+                            </li>
+                            <li>
+                                <label>邮箱验证:</label>
+                                <input type="text" name="email" id="email">
+                                <span class="n_error_tip">提示信息</span>
+                            </li>
+                            <li>
+                                <label>密码:</label>
+                                <input type="password" name="pwd" id="pwd">
+                                <span class="n_error_tip">提示信息</span>
+                            </li>
+                            <li>
+                                <label>确认密码:</label>
+                                <input type="password" name="cpwd" id="cpwd">
+                                <span class="n_error_tip">提示信息</span>
+                            </li>
+                            <li class="n_reg_sub">
+                                <input type="submit" value="提 交" >
+                            </li>
+                        </ul>
+                        <p style="font-size: 16px;margin-bottom:20px">注意事项：如邮箱无法使用、请使用新邮箱发送账号密码至newzn_admin@163.com、审核通过后会及时邮件回复并更新您的邮箱信息</p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+		</div>
+    </div>
+{% endblock body3 %}
+

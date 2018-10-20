@@ -1,0 +1,14 @@
+Django==1.8.2
+django-haystack==2.6.0
+django-ranged-response==0.2.0
+django-redis-cache==1.7.1
+django-redis-sessions==0.6.1
+django-simple-captcha==0.5.9
+django-tinymce==2.7.0
+jieba==0.39
+MySQL-python==1.2.5
+Pillow==5.2.0
+pkg-resources==0.0.0
+redis==2.10.6
+six==1.11.0
+Whoosh==2.7.4
