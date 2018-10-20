@@ -693,3 +693,23 @@ html,body{height:100%}
 .zhuxiao:hover{
 	color:#ff8800;
 }
+
+/* 忘记密码页面 */
+.n_sub_con{height: 500px;display: inline;}
+.n_r_con{width:400px;margin: 0 auto}
+.n_reg_title{width:360px;height:50px;float:left;margin-left:30px;border-bottom:1px solid #e0e0e0}
+.n_reg_title h1{height:50px;line-height:50px;float:left;font-size:24px;color:#a8a8a8;font-weight:bold;}
+.n_reg_title a{float:right;height:20px;line-height:20px;font-size:16px;color:#5fb42a;padding-right:20px;background:url(../images/icons02.png) 35px 3px no-repeat;margin-top:15px}
+
+.n_reg_form{width:360px;margin:25px 0 0 30px;float:left;position:relative;}
+.n_reg_form li{height:65px;}
+.n_reg_form li label{width:70px;height:30px;padding-top:6px;line-height:30px;float:left;font-size:14px;color:#a8a8a8}
+.n_reg_form li input{width:288px;height:38px;border:1px solid #e0e0e0;float:left;outline:none;text-indent:10px;background-color:#f8f8f8}
+.n_reg_form li.n_reg_sub input{width:360px;margin-top:10px;height:40px;background-color:#47aa34;font-size:18px;color:#fff;font-family:'Microsoft Yahei';cursor:pointer;}
+.n_reg_form li.n_yanzheng input{width:100px;}
+.n_reg_form li .n_error_tip{display:none;float:left;height:25px;line-height:25px;margin-left:70px;color:#e62e2e;}
+.n_reg_form li.n_yanzheng.n_error_tip{position: absolute;left:0;top:300px;}
+.n_reg_form li .n_error_tip2{float:left;height:20px;line-height:20px;color:#e62e2e;display:none;}
+.n_but_con{display:inline-block;width:82px;height:46px;background-color: #47aa34;color:#fff;}
+.n_but1{font-size: 18px;margin-left: 5px}
+.n_but2{font-size: 17px;margin-left: 11px}

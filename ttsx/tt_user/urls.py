@@ -11,4 +11,6 @@ urlpatterns = [
     url("^centersite$",views.centerSite),           # 收货地址页
     url("^centerorder/?(\d*)$",views.centerOrder),  # 个人订单页
     url("^logout$",views.logOut),                   # 注销
+    url("^updatepwd$",views.update_pwd),            # 忘记密码
+    url("^emailcode$",views.email_code),            # 邮箱验证码接口
 ]
